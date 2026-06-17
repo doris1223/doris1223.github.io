@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>焕彩艳谜 | 产品中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 0, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff00ff, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 3px;
+        }
+
+        .back-btn {
+            color: #aaa;
+            text-decoration: none;
+            padding: 10px 25px;
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            border-color: #ff00ff;
+            color: #ff00ff;
+        }
+
+        .hero {
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            text-align: center;
+        }
+
+        .brand-name {
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff00ff 0%, #ff6b9d 50%, #ff00ff 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite;
+            text-shadow: 0 0 100px rgba(255, 0, 255, 0.5);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-tagline {
+            font-size: 1.3rem;
+            color: #888;
+            margin-top: 20px;
+            letter-spacing: 5px;
+        }
+
+        /* 系列导航 */
+        .series-nav {
+            position: sticky;
+            top: 80px;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.95);
+            padding: 20px 10%;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255, 0, 255, 0.1);
+        }
+
+        .series-btn {
+            padding: 10px 25px;
+            background: transparent;
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            border-radius: 25px;
+            color: #aaa;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .series-btn:hover,
+        .series-btn.active {
+            background: linear-gradient(135deg, #ff00ff, #ff6b9d);
+            border-color: transparent;
+            color: #fff;
+        }
+
+        /* 产品区域 */
+        .products-section {
+            padding: 50px 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .series-title {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            padding-left: 20px;
+            border-left: 4px solid #ff00ff;
+            background: linear-gradient(135deg, #ff00ff, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            background: rgba(20, 20, 30, 0.8);
+            border: 1px solid rgba(255, 0, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #ff00ff, #ff6b9d);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-card:hover {
+            border-color: rgba(255, 0, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 0, 255, 0.15);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .product-price {
+            background: linear-gradient(135deg, #ff00ff, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .product-spec {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .product-spec::before {
+            content: '📦';
+            font-size: 0.9rem;
+        }
+
+        .product-effect {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .product-effect::before {
+            content: '✨ 功效：';
+            color: #ff6b9d;
+        }
+
+        /* 统计数据 */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            padding: 60px 10%;
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(255, 0, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 0, 255, 0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff00ff, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #888;
+            margin-top: 10px;
+        }
+
+        footer {
+            padding: 40px;
+            text-align: center;
+            color: #555;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .brand-name {
+                font-size: 3rem;
+            }
+
+            .stats {
+                gap: 30px;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+
+    <nav>
+        <div class="logo">焕彩艳谜</div>
+        <a href="index.html" class="back-btn">← 返回主页</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="brand-name">焕彩艳谜</div>
+            <p class="hero-tagline">重新定义你的美丽</p>
+        </div>
+    </section>
+
+    <div class="series-nav">
+        <button class="series-btn active" onclick="scrollToSeries('moisture')">补水保湿系列</button>
+        <button class="series-btn" onclick="scrollToSeries('repair')">修护舒敏系列</button>
+        <button class="series-btn" onclick="scrollToSeries('whitening')">调肤净斑控色系列</button>
+        <button class="series-btn" onclick="scrollToSeries('anti-aging')">抗衰系列</button>
+        <button class="series-btn" onclick="scrollToSeries('oral')">口服系列</button>
+        <button class="series-btn" onclick="scrollToSeries('body')">轻体系列</button>
+    </div>
+
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-number">34+</div>
+            <div class="stat-label">专业产品</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">6</div>
+            <div class="stat-label">产品系列</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">品质保证</div>
+        </div>
+    </div>
+
+    <!-- 补水保湿系列 -->
+    <section class="products-section" id="moisture">
+        <h2 class="series-title">补水保湿系列</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">氨基酸洁面乳</div>
+                    <div class="product-price">¥138</div>
+                </div>
+                <div class="product-spec">100g</div>
+                <div class="product-effect">温和洁面，净泽肌肤（适合所有肤质）</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">莹润爽肤喷雾</div>
+                    <div class="product-price">¥169</div>
+                </div>
+                <div class="product-spec">100ml</div>
+                <div class="product-effect">莹润补水，保湿定妆</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">焕颜乳</div>
+                    <div class="product-price">¥199</div>
+                </div>
+                <div class="product-spec">100ml</div>
+                <div class="product-effect">保湿润泽，焕颜嫩肤提亮肤色，一抹爆水搓出小水珠</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">养肤精华水</div>
+                    <div class="product-price">¥298</div>
+                </div>
+                <div class="product-spec">100ml</div>
+                <div class="product-effect">养肤保湿，沁透润泽，舒缓镇静，强韧屏障</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">养肤精华乳</div>
+                    <div class="product-price">¥368</div>
+                </div>
+                <div class="product-spec">100ml</div>
+                <div class="product-effect">养肤保湿，令肌肤水润饱满，增强肌肤免疫力</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">新品颜隔离乳</div>
+                    <div class="product-price">¥198</div>
+                </div>
+                <div class="product-spec">40g</div>
+                <div class="product-effect">隔离粉尘，物理防晒，水润细腻，透亮肌肤</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">纤连蛋白水光美肌面膜</div>
+                    <div class="product-price">¥68</div>
+                </div>
+                <div class="product-spec">5片</div>
+                <div class="product-effect">补水保湿，美白亮肤</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">积雪草呵护面膜</div>
+                    <div class="product-price">¥128</div>
+                </div>
+                <div class="product-spec">5片</div>
+                <div class="product-effect">镇敏舒缓，促愈皮肤，晒后修复，复退红肿，抗氧化</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 修护舒敏系列 -->
+    <section class="products-section" id="repair">
+        <h2 class="series-title">修护舒敏系列</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">焕彩护唇膏</div>
+                    <div class="product-price">¥398</div>
+                </div>
+                <div class="product-spec">20ml</div>
+                <div class="product-effect">快速褪红，止痒，解决外力引起的皮肤损伤</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">多糖精华液</div>
+                    <div class="product-price">¥298</div>
+                </div>
+                <div class="product-spec">30ml</div>
+                <div class="product-effect">再生重建，退红消炎，修护受损屏障</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">木糖醇呵护霜</div>
+                    <div class="product-price">¥228</div>
+                </div>
+                <div class="product-spec">30g</div>
+                <div class="product-effect">舒缓退红，深层补水</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">轻奢倍护霜</div>
+                    <div class="product-price">¥498</div>
+                </div>
+                <div class="product-spec">30g</div>
+                <div class="product-effect">修护受损屏障，以油养肤，活驻颜修护受损肌肤</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">植萃颜凝胶</div>
+                    <div class="product-price">¥598</div>
+                </div>
+                <div class="product-spec">20g</div>
+                <div class="product-effect">特色修护疤、痘坑、痘印及术后皮损</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">牡丹呵护凝胶套装</div>
+                    <div class="product-price">¥498</div>
+                </div>
+                <div class="product-spec">5g*10支</div>
+                <div class="product-effect">快速褪红消肿，增厚角质层，重塑完美肌肤</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 调肤净斑控色系列 -->
+    <section class="products-section" id="whitening">
+        <h2 class="series-title">调肤净斑控色系列</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">美肤霜</div>
+                    <div class="product-price">¥398</div>
+                </div>
+                <div class="product-spec">30g</div>
+                <div class="product-effect">击退暗沉，瓦解黑色素，美白嫩肤</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">美肌时光（小套）</div>
+                    <div class="product-price">¥499</div>
+                </div>
+                <div class="product-spec">10ml*2+10g*2</div>
+                <div class="product-effect">洁白透亮，多维度提升紧致，淡化黑色素，细致毛孔</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">美肌时光（大套）</div>
+                    <div class="product-price">¥2980</div>
+                </div>
+                <div class="product-spec">30ml*3+30g*2</div>
+                <div class="product-effect">洁白透亮，多维度提升紧致，淡化黑色素，细致毛孔</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">植萃焕颜凝胶套装</div>
+                    <div class="product-price">¥3980</div>
+                </div>
+                <div class="product-spec">3g*5支</div>
+                <div class="product-effect">自然美肤疗法，直击素源淡化色斑，细致毛孔，提升面部改善黑眼圈</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">双美水光套组</div>
+                    <div class="product-price">¥1280</div>
+                </div>
+                <div class="product-spec">6组</div>
+                <div class="product-effect">美白淡斑，提亮肤色，细腻肌肤，滋养修护</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">植萃焕颜液</div>
+                    <div class="product-price">¥398</div>
+                </div>
+                <div class="product-spec">20ml</div>
+                <div class="product-effect">层层瓦解黑色素及代谢老废角质，光感臻白</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">植萃美颜液</div>
+                    <div class="product-price">¥398</div>
+                </div>
+                <div class="product-spec">20ml</div>
+                <div class="product-effect">去黄亮颜，莹润嫩肤，黄褐斑的长期保养液</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">净颜液</div>
+                    <div class="product-price">¥499</div>
+                </div>
+                <div class="product-spec">20ml</div>
+                <div class="product-effect">直击色素源，快速瓦解黑色素，解决色沉铅汞，黄褐斑等色素问题</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">净透精华液</div>
+                    <div class="product-price">¥398</div>
+                </div>
+                <div class="product-spec">20ml</div>
+                <div class="product-effect">美白淡斑，淡化深层色素色沉</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">焕彩霜</div>
+                    <div class="product-price">¥498</div>
+                </div>
+                <div class="product-spec">30g</div>
+                <div class="product-effect">深层焕发肌润透亮泽，抑制淡化黑色素，重塑健康美肌</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">净颜尊享套组</div>
+                    <div class="product-price">¥1280</div>
+                </div>
+                <div class="product-spec">20ml+30g*2</div>
+                <div class="product-effect">直击色素源，快速瓦解黑色素，解决色沉铅汞，黄褐斑等色素问题</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">清颜平衡臻萃套组</div>
+                    <div class="product-price">¥598</div>
+                </div>
+                <div class="product-spec">30g</div>
+                <div class="product-effect">调节水油平衡，有效缓解、粉刺闭口、痘疮、修复激素脸</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">焕亮抗皱精华眼霜</div>
+                    <div class="product-price">¥399</div>
+                </div>
+                <div class="product-spec">20g</div>
+                <div class="product-effect">淡化黑眼圈眼袋，提亮眼周，改善脂肪粒可当全脸抗皱精华霜用</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 抗衰系列 -->
+    <section class="products-section" id="anti-aging">
+        <h2 class="series-title">抗衰系列</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">胶原水光净肤抗皱套</div>
+                    <div class="product-price">¥1980</div>
+                </div>
+                <div class="product-spec">3MC*10+7g*10</div>
+                <div class="product-effect">净肤肌肤，排毒养颜，淡化细纹，紧致抗衰</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">幼态焕肤套餐</div>
+                    <div class="product-price">¥1280</div>
+                </div>
+                <div class="product-spec">50ml*1+30g*1+30cm*1</div>
+                <div class="product-effect">激活细胞，紧致抗衰，提亮肤色，提升轮廓</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 口服系列 -->
+    <section class="products-section" id="oral">
+        <h2 class="series-title">口服系列</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">胶原蛋白少女饮</div>
+                    <div class="product-price">¥399</div>
+                </div>
+                <div class="product-spec">30ml*10瓶</div>
+                <div class="product-effect">7大养护功效=40次普通面膜+淡斑+助眠+紧致+美白+排毒+补水+抗衰</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">益生元果蔬植物肽嗨吃饮</div>
+                    <div class="product-price">¥399</div>
+                </div>
+                <div class="product-spec">50ml*10支</div>
+                <div class="product-effect">控糖、阻挡糖对油份的吸收，护肠道，护关节，调理肠道健康</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 轻体系列 -->
+    <section class="products-section" id="body">
+        <h2 class="series-title">轻体系列</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">美肌调膜粉</div>
+                    <div class="product-price">¥468</div>
+                </div>
+                <div class="product-spec">100g</div>
+                <div class="product-effect">美白淡斑，淡化细纹，清透毛孔，紧致抗衰</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">嫒嫒童寒湿排重套</div>
+                    <div class="product-price">¥599</div>
+                </div>
+                <div class="product-spec">50CM*2瓶</div>
+                <div class="product-effect">排寒，排湿，暖宫，暖胃，掉重</div>
+            </div>
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-name">嫒嫒美人塑形套</div>
+                    <div class="product-price">¥1980</div>
+                </div>
+                <div class="product-spec">10ml*10支+10ml*10支</div>
+                <div class="product-effect">爆脂，燃脂，收紧肌肤</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 焕彩艳谜 | 重新定义你的美丽</p>
+    </footer>
+
+    <script>
+        // 粒子背景
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const particles = [];
+        const particleCount = 60;
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.4 + 0.1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 0, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(255, 0, 255, ${0.08 * (1 - distance / 120)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // 滚动到指定系列
+        function scrollToSeries(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.querySelectorAll('.series-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // 滚动时高亮对应按钮
+        window.addEventListener('scroll', () => {
+            const sections = ['moisture', 'repair', 'whitening', 'anti-aging', 'oral', 'body'];
+            const buttons = document.querySelectorAll('.series-btn');
+            
+            for (let i = sections.length - 1; i >= 0; i--) {
+                const section = document.getElementById(sections[i]);
+                if (section && section.getBoundingClientRect().top <= 200) {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    buttons[i].classList.add('active');
+                    break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
