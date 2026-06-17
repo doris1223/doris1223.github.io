@@ -1304,6 +1304,144 @@
             transition: color 0.3s;
         }
         .footer-links a:hover { color: var(--cyan); }
+
+        /* 顶部公告栏 */
+        .announcement-bar {
+            background: linear-gradient(90deg, var(--magenta), var(--cyan));
+            padding: 10px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10001;
+        }
+        .announcement-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .ann-badge {
+            background: rgba(255,255,255,0.25);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .ann-text {
+            font-size: 0.85rem;
+            color: #fff;
+        }
+        .ann-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0 5px;
+        }
+        .ann-close:hover { color: #fff; }
+
+        /* 会员权益 */
+        .membership-section {
+            background: linear-gradient(180deg, transparent, rgba(255,0,255,0.02), transparent);
+        }
+        .membership-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .membership-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+        }
+        .membership-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0,255,255,0.2);
+        }
+        .membership-card.featured {
+            border-color: var(--magenta);
+            box-shadow: 0 0 30px rgba(255,0,255,0.1);
+        }
+        .member-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--magenta), var(--cyan));
+            padding: 4px 18px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .member-tier {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .member-price {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        .member-price span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .member-benefits {
+            list-style: none;
+            text-align: left;
+        }
+        .member-benefits li {
+            padding: 8px 0;
+            color: #aaa;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .member-benefits li:last-child { border: none; }
+        .member-benefits strong { color: var(--cyan); }
+        .membership-note {
+            text-align: center;
+            margin-top: 25px;
+            color: #555;
+            font-size: 0.75rem;
+        }
+
+        /* 分享按钮 */
+        .footer-share h4 {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .share-btn {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .share-btn.wechat { background: rgba(7,193,96,0.15); color: #07c160; }
+        .share-btn.wechat:hover { background: rgba(7,193,96,0.3); }
+        .share-btn.weibo { background: rgba(230,36,41,0.15); color: #e62429; }
+        .share-btn.weibo:hover { background: rgba(230,36,41,0.3); }
+        .share-btn.qq { background: rgba(0,120,215,0.15); color: #0078d7; }
+        .share-btn.qq:hover { background: rgba(0,120,215,0.3); }
+
         .footer-bottom {
             text-align: center;
             padding-top: 20px;
@@ -1473,6 +1611,15 @@
 
     <!-- 粒子背景 -->
     <canvas id="particles"></canvas>
+
+    <!-- 顶部优惠公告 -->
+    <div class="announcement-bar" id="announcement">
+        <div class="announcement-content">
+            <span class="ann-badge">限时</span>
+            <span class="ann-text">新客首次体验享 <strong>8折优惠</strong> | 添加微信预约即送免费皮肤检测</span>
+            <button class="ann-close" onclick="closeAnnouncement()">✕</button>
+        </div>
+    </div>
 
     <!-- 导航栏 -->
     <nav id="navbar">
@@ -1834,6 +1981,49 @@
         </div>
     </section>
 
+    <!-- 会员权益 -->
+    <section class="membership-section" id="membership">
+        <h2 class="section-title fade-in">会员权益</h2>
+        <p class="section-subtitle fade-in">加入我们，享受专属美丽特权</p>
+        <div class="membership-grid fade-in">
+            <div class="membership-card">
+                <div class="member-tier">银卡会员</div>
+                <div class="member-price">充值 <span>2000</span> 元</div>
+                <ul class="member-benefits">
+                    <li>全场产品 <strong>9.5折</strong></li>
+                    <li>每月1次免费皮肤检测</li>
+                    <li>生日月专属礼品</li>
+                    <li>优先预约热门时段</li>
+                </ul>
+            </div>
+            <div class="membership-card featured">
+                <div class="member-badge">推荐</div>
+                <div class="member-tier">金卡会员</div>
+                <div class="member-price">充值 <span>5000</span> 元</div>
+                <ul class="member-benefits">
+                    <li>全场产品 <strong>9折</strong></li>
+                    <li>每月2次免费护理体验</li>
+                    <li>专属美容顾问1对1</li>
+                    <li>新品优先试用权</li>
+                    <li>闺蜜同行享同等待遇</li>
+                </ul>
+            </div>
+            <div class="membership-card">
+                <div class="member-tier">钻石会员</div>
+                <div class="member-price">充值 <span>10000</span> 元</div>
+                <ul class="member-benefits">
+                    <li>全场产品 <strong>8.5折</strong></li>
+                    <li>每月3次免费护理</li>
+                    <li>私人定制护肤方案</li>
+                    <li>年度皮肤管理报告</li>
+                    <li>专属VIP护理室</li>
+                    <li>免费参加品牌活动</li>
+                </ul>
+            </div>
+        </div>
+        <p class="membership-note fade-in">* 具体权益以到店咨询为准，最终解释权归本店所有</p>
+    </section>
+
     <!-- 品牌展示 -->
     <section class="brand-section" id="brand">
         <h2 class="section-title fade-in">我的品牌</h2>
@@ -1992,6 +2182,14 @@
                 <a href="#ai">AI探索</a>
                 <a href="#contact">联系方式</a>
             </div>
+            <div class="footer-share">
+                <h4>分享给朋友</h4>
+                <div class="share-buttons">
+                    <a class="share-btn wechat" onclick="shareToWechat()">💬 微信</a>
+                    <a class="share-btn weibo" href="https://service.weibo.com/share/share.php?url=https://doris1223.github.io/&title=帅的数字空间-皮肤管理身材管理" target="_blank">📱 微博</a>
+                    <a class="share-btn qq" href="https://connect.qq.com/widget/shareqq/index.html?url=https://doris1223.github.io/&title=帅的数字空间" target="_blank">🐧 QQ</a>
+                </div>
+            </div>
         </div>
         <div class="footer-bottom">
             &copy; 2026 帅的数字空间 | 用科技定义美丽
@@ -2050,6 +2248,24 @@
             const isActive = item.classList.contains('active');
             document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
             if (!isActive) item.classList.add('active');
+        }
+
+        // === 公告栏关闭 ===
+        function closeAnnouncement() {
+            const bar = document.getElementById('announcement');
+            bar.style.maxHeight = bar.scrollHeight + 'px';
+            requestAnimationFrame(() => {
+                bar.style.maxHeight = '0';
+                bar.style.padding = '0';
+                bar.style.overflow = 'hidden';
+                bar.style.transition = 'all 0.3s ease';
+            });
+            setTimeout(() => bar.style.display = 'none', 300);
+        }
+
+        // === 微信分享 ===
+        function shareToWechat() {
+            alert('请截图或复制网址，发送给微信好友或朋友圈分享。\n网址：https://doris1223.github.io/');
         }
 
         // === 表单提交 → 邮箱 ===
