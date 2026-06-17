@@ -512,6 +512,75 @@
             font-size: 0.95rem;
         }
 
+        /* 客户好评 */
+        .testimonials-section {
+            background: linear-gradient(180deg, transparent, rgba(255, 0, 255, 0.02), transparent);
+        }
+        .testimonials-track {
+            display: flex;
+            gap: 25px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 10px 0 30px;
+            scrollbar-width: none;
+        }
+        .testimonials-track::-webkit-scrollbar { display: none; }
+        .testimonial-card {
+            min-width: 320px;
+            max-width: 350px;
+            flex-shrink: 0;
+            scroll-snap-align: start;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 0, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.4s;
+        }
+        .testimonial-card:hover {
+            border-color: rgba(255, 0, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 0, 255, 0.1);
+        }
+        .stars {
+            color: #ffd700;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+        .testimonial-text {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .author-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--magenta), var(--cyan));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .author-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .author-tag {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 2px;
+        }
+
         /* 品牌展示 */
         .brand-section {
             text-align: center;
@@ -1198,6 +1267,69 @@
                 <div class="service-icon">📹</div>
                 <h3 class="service-title">新媒体运营</h3>
                 <p class="service-desc">全平台内容策划与矩阵运营，打造个人IP，精准触达目标用户，实现品牌价值最大化。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 客户好评 -->
+    <section class="testimonials-section" id="testimonials">
+        <h2 class="section-title fade-in">客户好评</h2>
+        <p class="section-subtitle fade-in">真实反馈，值得信赖</p>
+        <div class="testimonials-track fade-in">
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">做了两个月的皮肤管理，脸上的痘印淡了好多，皮肤状态明显变好了！服务很专业，每次都会根据皮肤状态调整方案。</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">陈</div>
+                    <div class="author-info">
+                        <div class="author-name">陈小姐</div>
+                        <div class="author-tag">皮肤管理 · 祛痘</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">生完宝宝后肚子一直收不回去，试了好几个地方都没效果。在这里做了三次塑形，腰围直接小了5cm，太惊喜了！</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">李</div>
+                    <div class="author-info">
+                        <div class="author-name">李女士</div>
+                        <div class="author-tag">身材管理 · 产后恢复</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">换彩艳谜的精华水真的绝了！用了一周脸就不干了，上妆也不卡粉。已经回购第三瓶了，姐妹们冲！</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">王</div>
+                    <div class="author-info">
+                        <div class="author-name">王同学</div>
+                        <div class="author-tag">焕彩艳谜 · 补水保湿</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">脸上的斑困扰我好多年了，试过很多产品都没用。在这里做了净斑疗程，坚持了三个月，斑真的淡了很多，素颜也敢出门了。</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">张</div>
+                    <div class="author-info">
+                        <div class="author-name">张姐</div>
+                        <div class="author-tag">皮肤管理 · 美白淡斑</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">体寒特别严重，手脚冰凉还痛经。做了排寒祛湿之后整个人都暖和了，痛经也缓解了好多，效果超出预期！</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">赵</div>
+                    <div class="author-info">
+                        <div class="author-name">赵小姐</div>
+                        <div class="author-tag">媄簌儿 · 排寒祛湿</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
