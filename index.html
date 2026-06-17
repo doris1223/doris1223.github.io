@@ -581,6 +581,188 @@
             margin-top: 2px;
         }
 
+        /* 数据看板 */
+        .stats-section {
+            padding: 60px 10%;
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(0,255,255,0.08);
+            border-bottom: 1px solid rgba(0,255,255,0.08);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+        .stat-item {
+            position: relative;
+        }
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+        .stat-suffix {
+            font-size: 1rem;
+            color: var(--cyan);
+            margin-top: 5px;
+        }
+        .stat-label {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        /* 产品推荐 */
+        .featured-section {
+            background: linear-gradient(180deg, transparent, rgba(0,255,255,0.015), transparent);
+        }
+        .featured-track {
+            display: flex;
+            gap: 25px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 10px 0 30px;
+            scrollbar-width: none;
+        }
+        .featured-track::-webkit-scrollbar { display: none; }
+        .featured-card {
+            min-width: 260px;
+            flex-shrink: 0;
+            scroll-snap-align: start;
+            background: var(--card-bg);
+            border: 1px solid rgba(0,255,255,0.1);
+            border-radius: 16px;
+            padding: 30px 25px;
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+        }
+        .featured-card:hover {
+            border-color: rgba(0,255,255,0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,255,255,0.1);
+        }
+        .featured-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: rgba(255,0,255,0.2);
+            color: var(--magenta);
+        }
+        .featured-badge.hot {
+            background: rgba(255,107,107,0.2);
+            color: #ff6b6b;
+        }
+        .featured-badge.new {
+            background: rgba(0,255,255,0.2);
+            color: var(--cyan);
+        }
+        .featured-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 15px;
+        }
+        .featured-card h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+        .featured-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .featured-card p {
+            color: #888;
+            font-size: 0.8rem;
+            line-height: 1.6;
+        }
+        .featured-more {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .view-all-btn {
+            display: inline-block;
+            padding: 12px 40px;
+            border: 1px solid rgba(0,255,255,0.3);
+            border-radius: 25px;
+            color: var(--cyan);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .view-all-btn:hover {
+            background: rgba(0,255,255,0.1);
+            border-color: var(--cyan);
+        }
+
+        /* FAQ */
+        .faq-section {
+            background: linear-gradient(180deg, transparent, rgba(255,0,255,0.015), transparent);
+        }
+        .faq-list {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .faq-item:hover {
+            border-color: rgba(0,255,255,0.2);
+        }
+        .faq-question {
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #ddd;
+        }
+        .faq-arrow {
+            font-size: 0.8rem;
+            color: #666;
+            transition: transform 0.3s;
+        }
+        .faq-item.active .faq-arrow {
+            transform: rotate(180deg);
+            color: var(--cyan);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+        }
+        .faq-answer p {
+            padding: 0 20px 18px;
+            color: #999;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
         /* 品牌展示 */
         .brand-section {
             text-align: center;
@@ -1334,6 +1516,124 @@
         </div>
     </section>
 
+    <!-- 数据看板 -->
+    <section class="stats-section" id="stats">
+        <div class="stats-grid fade-in">
+            <div class="stat-item">
+                <div class="stat-number" data-target="10000">0</div>
+                <div class="stat-label">服务客户</div>
+                <div class="stat-suffix">+</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="34">0</div>
+                <div class="stat-label">专业产品</div>
+                <div class="stat-suffix">款</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="98">0</div>
+                <div class="stat-label">好评率</div>
+                <div class="stat-suffix">%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="6">0</div>
+                <div class="stat-label">产品系列</div>
+                <div class="stat-suffix">个</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品推荐 -->
+    <section class="featured-section" id="featured">
+        <h2 class="section-title fade-in">明星产品</h2>
+        <p class="section-subtitle fade-in">精选热销，口碑之选</p>
+        <div class="featured-track fade-in">
+            <div class="featured-card">
+                <div class="featured-badge">爆款</div>
+                <div class="featured-icon" style="background: linear-gradient(135deg, #ff6b9d22, #ff00ff22);">🌸</div>
+                <h3>美肌时光（大套）</h3>
+                <div class="featured-price">¥2980</div>
+                <p>洁白透亮，多维度提升紧致，淡化黑色素，细致毛孔</p>
+            </div>
+            <div class="featured-card">
+                <div class="featured-badge hot">热销</div>
+                <div class="featured-icon" style="background: linear-gradient(135deg, #00ffff22, #00cc8822);">💧</div>
+                <h3>养肤精华水</h3>
+                <div class="featured-price">¥298</div>
+                <p>养肤保湿，沁透润泽，舒缓镇静，强韧屏障</p>
+            </div>
+            <div class="featured-card">
+                <div class="featured-badge new">新品</div>
+                <div class="featured-icon" style="background: linear-gradient(135deg, #ffd70022, #ff8c0022);">✨</div>
+                <h3>植萃焕颜凝胶套装</h3>
+                <div class="featured-price">¥3980</div>
+                <p>自然美肤疗法，直击素源淡化色斑，细致毛孔</p>
+            </div>
+            <div class="featured-card">
+                <div class="featured-badge hot">热销</div>
+                <div class="featured-icon" style="background: linear-gradient(135deg, #ff6b9d22, #ff00ff22);">🥤</div>
+                <h3>胶原蛋白少女饮</h3>
+                <div class="featured-price">¥399</div>
+                <p>7大养护功效，淡斑+助眠+紧致+美白+排毒+补水+抗衰</p>
+            </div>
+        </div>
+        <div class="featured-more fade-in">
+            <a href="brand.html" class="view-all-btn">查看全部产品 →</a>
+        </div>
+    </section>
+
+    <!-- 常见问题 -->
+    <section class="faq-section" id="faq">
+        <h2 class="section-title fade-in">常见问题</h2>
+        <p class="section-subtitle fade-in">你想知道的，都在这里</p>
+        <div class="faq-list fade-in">
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>皮肤管理一般需要做多久才能看到效果？</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>一般一个疗程（4-6次）就能看到明显效果。具体时间因个人肤质和问题严重程度而异，我们会根据您的皮肤检测结果制定个性化方案。</p>
+                </div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>焕彩艳谜的产品适合敏感肌吗？</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>我们有专门的修护舒敏系列产品，采用温和植萃成分，专为敏感肌肤设计。建议先到店做皮肤检测，我们会推荐最适合您的产品。</p>
+                </div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>身材管理的疗程是怎么安排的？</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>我们会先做体脂检测和体型评估，然后制定个性化方案。一般每周1-2次，每次40-60分钟。配合饮食建议效果更佳。</p>
+                </div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>做皮肤管理会不会有依赖性？</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>不会。我们的疗程是帮助皮肤恢复自我修复能力，而不是替代皮肤功能。疗程结束后，只要做好日常护理，效果可以长期维持。</p>
+                </div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>如何预约到店体验？</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>您可以通过页面底部的微信二维码直接添加好友预约，也可以填写咨询表单留下联系方式，我们会在24小时内联系您安排体验。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- 品牌展示 -->
     <section class="brand-section" id="brand">
         <h2 class="section-title fade-in">我的品牌</h2>
@@ -1515,6 +1815,40 @@
         // === 浮动咨询按钮 ===
         function scrollToContact() {
             document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // === 数字计数动画 ===
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.stat-number');
+                    counters.forEach(counter => {
+                        const target = +counter.dataset.target;
+                        const duration = 2000;
+                        const step = target / (duration / 16);
+                        let current = 0;
+                        const timer = setInterval(() => {
+                            current += step;
+                            if (current >= target) {
+                                counter.textContent = target.toLocaleString();
+                                clearInterval(timer);
+                            } else {
+                                counter.textContent = Math.floor(current).toLocaleString();
+                            }
+                        }, 16);
+                    });
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) counterObserver.observe(statsSection);
+
+        // === FAQ展开收起 ===
+        function toggleFaq(item) {
+            const isActive = item.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+            if (!isActive) item.classList.add('active');
         }
 
         // === 表单提交 → 邮箱 ===
