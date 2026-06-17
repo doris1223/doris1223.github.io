@@ -700,21 +700,13 @@
         .wechat-qr {
             display: inline-block;
         }
-        .qr-placeholder {
+        .qr-image {
             width: 160px;
             height: 160px;
-            background: linear-gradient(135deg, rgba(7,193,96,0.15), rgba(7,193,96,0.05));
-            border: 2px dashed rgba(7,193,96,0.4);
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            border-radius: 12px;
+            border: 2px solid rgba(7,193,96,0.3);
+            object-fit: cover;
         }
-        .qr-icon { font-size: 2.5rem; }
-        .qr-text { color: #07c160; font-size: 0.85rem; font-weight: 600; }
-        .qr-id { color: #888; font-size: 0.8rem; }
         .wechat-note {
             margin-top: 12px;
             font-size: 0.75rem;
@@ -1284,11 +1276,7 @@
                 <div class="wechat-divider"><span>或</span></div>
                 <p class="wechat-tip">扫码添加微信，直接沟通</p>
                 <div class="wechat-qr">
-                    <div class="qr-placeholder">
-                        <span class="qr-icon">💬</span>
-                        <span class="qr-text">微信扫码</span>
-                        <span class="qr-id">zHshu0212</span>
-                    </div>
+                    <img src="wechat-qr.png" alt="微信二维码" class="qr-image">
                 </div>
                 <p class="wechat-note">截图保存二维码 → 微信扫一扫添加</p>
             </div>
