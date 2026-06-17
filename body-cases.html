@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>身材管理案例 | 帅的数字空间</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --cyan: #00ffff;
+            --magenta: #ff00ff;
+            --dark: #0a0a0f;
+        }
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: var(--dark);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark); z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.5s;
+        }
+        #loading-screen.hidden { opacity: 0; pointer-events: none; }
+        .loading-text {
+            font-size: 4rem; font-weight: 900;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: loadSpin 1.5s ease-in-out infinite;
+        }
+        @keyframes loadSpin {
+            0%, 100% { transform: rotateY(0deg) scale(1); }
+            50% { transform: rotateY(180deg) scale(1.1); }
+        }
+
+        #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px; z-index: 1001;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            width: 0%; transition: width 0.1s;
+        }
+
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: rgba(10,10,15,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,255,255,0.1);
+        }
+        .logo {
+            font-size: 1.8rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .back-btn {
+            color: #aaa; text-decoration: none; padding: 10px 25px;
+            border: 1px solid rgba(0,255,255,0.3); border-radius: 25px;
+            transition: all 0.3s;
+        }
+        .back-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+        .hero {
+            height: 50vh; display: flex; align-items: center; justify-content: center;
+            position: relative; z-index: 1;
+        }
+        .hero-content { text-align: center; }
+        .hero-title {
+            font-size: 4rem; font-weight: 900;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero-subtitle { color: #888; margin-top: 15px; font-size: 1.1rem; }
+
+        .section {
+            padding: 60px 8%; position: relative; z-index: 1;
+        }
+        .section-title {
+            font-size: 2rem; margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .section-desc { color: #777; margin-bottom: 40px; }
+
+        .category-tabs {
+            display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 40px;
+        }
+        .cat-tab {
+            padding: 10px 25px; background: transparent;
+            border: 1px solid rgba(0,255,255,0.3); border-radius: 25px;
+            color: #aaa; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;
+        }
+        .cat-tab:hover, .cat-tab.active {
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            border-color: transparent; color: #fff;
+        }
+
+        .cases-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .case-card {
+            background: rgba(20,20,30,0.8);
+            border: 1px solid rgba(0,255,255,0.1);
+            border-radius: 15px; overflow: hidden;
+            transition: all 0.4s;
+        }
+        .case-card:hover {
+            border-color: rgba(0,255,255,0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,255,255,0.1);
+        }
+        .case-image {
+            width: 100%; height: 200px;
+            background: linear-gradient(135deg, rgba(0,255,255,0.1), rgba(255,0,255,0.1));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; color: rgba(255,255,255,0.2);
+        }
+        .case-info { padding: 20px; }
+        .case-tag {
+            display: inline-block; padding: 4px 12px;
+            background: rgba(0,255,255,0.1); border-radius: 20px;
+            font-size: 0.75rem; color: var(--cyan); margin-bottom: 10px;
+        }
+        .case-title { font-size: 1rem; margin-bottom: 8px; }
+        .case-desc { color: #888; font-size: 0.85rem; line-height: 1.6; }
+        .case-result {
+            margin-top: 12px; padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.85rem; color: var(--cyan);
+        }
+
+        .placeholder-notice {
+            text-align: center; padding: 80px 20px;
+            background: rgba(0,255,255,0.02);
+            border: 2px dashed rgba(0,255,255,0.2);
+            border-radius: 15px; margin-top: 30px;
+        }
+        .placeholder-notice .icon { font-size: 4rem; margin-bottom: 20px; }
+        .placeholder-notice h3 { color: #aaa; margin-bottom: 10px; }
+        .placeholder-notice p { color: #666; font-size: 0.9rem; }
+
+        footer {
+            padding: 50px 10%; text-align: center;
+            border-top: 1px solid rgba(0,255,255,0.1);
+            position: relative; z-index: 1;
+        }
+        .footer-text { color: #555; font-size: 0.9rem; }
+
+        #back-to-top {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            border: none; color: #fff; font-size: 1.3rem;
+            cursor: pointer; z-index: 999;
+            opacity: 0; transition: all 0.3s;
+        }
+        #back-to-top.visible { opacity: 1; }
+        #back-to-top:hover { transform: translateY(-5px); }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .cases-grid { grid-template-columns: 1fr; }
+            nav { padding: 15px 20px; }
+        }
+        .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.6s; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <div id="loading-screen"><div class="loading-text">🏋️</div></div>
+    <div id="scroll-progress"></div>
+    <canvas id="particles"></canvas>
+
+    <nav>
+        <div class="logo">身材管理案例</div>
+        <a href="index.html" class="back-btn">← 返回主页</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-title">身材管理案例</div>
+            <p class="hero-subtitle">科学管理，遇见更好的自己</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title fade-in">案例分类</h2>
+        <p class="section-desc fade-in">点击查看不同类型的身材管理前后对比</p>
+
+        <div class="category-tabs fade-in">
+            <button class="cat-tab active" onclick="filterCases('all', this)">全部</button>
+            <button class="cat-tab" onclick="filterCases('weight', this)">减脂塑形</button>
+            <button class="cat-tab" onclick="filterCases('detox', this)">排寒祛湿</button>
+            <button class="cat-tab" onclick="filterCases('postpartum', this)">产后恢复</button>
+            <button class="cat-tab" onclick="filterCases('body-shape', this)">体型管理</button>
+        </div>
+
+        <div class="cases-grid" id="casesGrid">
+            <div class="case-card fade-in" data-category="weight">
+                <div class="case-image">📷</div>
+                <div class="case-info">
+                    <span class="case-tag">减脂塑形</span>
+                    <h3 class="case-title">案例标题</h3>
+                    <p class="case-desc">案例描述将在这里展示...</p>
+                    <div class="case-result">效果：等待添加</div>
+                </div>
+            </div>
+            <div class="case-card fade-in" data-category="detox">
+                <div class="case-image">📷</div>
+                <div class="case-info">
+                    <span class="case-tag">排寒祛湿</span>
+                    <h3 class="case-title">案例标题</h3>
+                    <p class="case-desc">案例描述将在这里展示...</p>
+                    <div class="case-result">效果：等待添加</div>
+                </div>
+            </div>
+            <div class="case-card fade-in" data-category="body-shape">
+                <div class="case-image">📷</div>
+                <div class="case-info">
+                    <span class="case-tag">体型管理</span>
+                    <h3 class="case-title">案例标题</h3>
+                    <p class="case-desc">案例描述将在这里展示...</p>
+                    <div class="case-result">效果：等待添加</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="placeholder-notice fade-in">
+            <div class="icon">📸</div>
+            <h3>更多案例即将上传</h3>
+            <p>我们将持续更新真实的身材管理前后对比案例<br>敬请期待</p>
+        </div>
+    </section>
+
+    <footer>
+        <p class="footer-text">© 2026 帅的数字空间 | 身材管理案例</p>
+    </footer>
+
+    <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => document.getElementById('loading-screen').classList.add('hidden'), 1000);
+        });
+
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement;
+            document.getElementById('scroll-progress').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 + '%';
+            document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
+        });
+
+        function filterCases(category, btn) {
+            document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.case-card').forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+        const particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                size: Math.random() * 2 + 0.5,
+                speedX: (Math.random() - 0.5) * 0.3, speedY: (Math.random() - 0.5) * 0.3,
+                opacity: Math.random() * 0.4 + 0.1
+            });
+        }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 255, 255, ${p.opacity})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

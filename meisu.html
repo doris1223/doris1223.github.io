@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>媄簌儿 | 身体健康品牌</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --green: #00cc88;
+            --green-light: #00ffaa;
+            --dark: #0a0a0f;
+        }
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: var(--dark);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Loading */
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark); z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.5s;
+        }
+        #loading-screen.hidden { opacity: 0; pointer-events: none; }
+        .loading-text {
+            font-size: 4rem; font-weight: 900;
+            background: linear-gradient(135deg, var(--green), var(--green-light));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: loadSpin 1.5s ease-in-out infinite;
+        }
+        @keyframes loadSpin {
+            0%, 100% { transform: rotateY(0deg) scale(1); }
+            50% { transform: rotateY(180deg) scale(1.1); }
+        }
+
+        /* Canvas */
+        #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+
+        /* Scroll progress */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px; z-index: 1001;
+            background: linear-gradient(90deg, var(--green), var(--green-light));
+            width: 0%; transition: width 0.1s;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: rgba(10,10,15,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,204,136,0.1);
+            transition: background 0.3s;
+        }
+        .logo {
+            font-size: 1.8rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--green), var(--green-light));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .back-btn {
+            color: #aaa; text-decoration: none; padding: 10px 25px;
+            border: 1px solid rgba(0,204,136,0.3); border-radius: 25px;
+            transition: all 0.3s;
+        }
+        .back-btn:hover { border-color: var(--green); color: var(--green); }
+
+        /* Hero */
+        .hero {
+            height: 80vh; display: flex; align-items: center; justify-content: center;
+            position: relative; z-index: 1;
+        }
+        .hero-content { text-align: center; }
+        .brand-name {
+            font-size: 6rem; font-weight: 900;
+            background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 50%, var(--green) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite;
+        }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .hero-tagline {
+            font-size: 1.4rem; color: #888; margin-top: 20px; letter-spacing: 5px;
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 10%; position: relative; z-index: 1;
+        }
+        .section-title {
+            font-size: 2.5rem; margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--green), var(--green-light));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .section-subtitle {
+            color: #777; margin-bottom: 50px; font-size: 1rem;
+        }
+
+        /* Philosophy */
+        .philosophy {
+            text-align: center; padding: 100px 10%;
+            background: linear-gradient(180deg, transparent, rgba(0,204,136,0.03), transparent);
+            position: relative; z-index: 1;
+        }
+        .philosophy-quote {
+            font-size: 1.5rem; color: #aaa; line-height: 2;
+            max-width: 700px; margin: 0 auto;
+        }
+        .philosophy-quote span {
+            color: var(--green-light); font-weight: 600;
+        }
+
+        /* Core values */
+        .values-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;
+        }
+        .value-card {
+            background: rgba(0,204,136,0.03);
+            border: 1px solid rgba(0,204,136,0.15);
+            border-radius: 15px; padding: 40px 30px;
+            text-align: center; transition: all 0.4s;
+        }
+        .value-card:hover {
+            border-color: var(--green);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,204,136,0.15);
+        }
+        .value-icon { font-size: 3rem; margin-bottom: 20px; }
+        .value-title {
+            font-size: 1.2rem; color: #fff; margin-bottom: 10px;
+        }
+        .value-desc { color: #888; line-height: 1.8; font-size: 0.9rem; }
+
+        /* Products preview */
+        .products-preview {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px;
+        }
+        .product-card {
+            background: rgba(20,20,30,0.8);
+            border: 1px solid rgba(0,204,136,0.1);
+            border-radius: 15px; padding: 30px;
+            transition: all 0.4s;
+        }
+        .product-card:hover {
+            border-color: rgba(0,204,136,0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,204,136,0.1);
+        }
+        .product-tag {
+            display: inline-block; padding: 4px 12px;
+            background: rgba(0,204,136,0.15); border-radius: 20px;
+            font-size: 0.75rem; color: var(--green-light); margin-bottom: 15px;
+        }
+        .product-name { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+        .product-desc { color: #888; font-size: 0.85rem; line-height: 1.6; }
+
+        /* CTA */
+        .cta-section {
+            text-align: center; padding: 100px 10%;
+            position: relative; z-index: 1;
+        }
+        .cta-button {
+            display: inline-block; padding: 18px 60px;
+            font-size: 1.2rem; font-weight: 700; text-decoration: none;
+            background: linear-gradient(135deg, var(--green), var(--green-light));
+            border-radius: 50px; color: #fff;
+            transition: all 0.4s;
+            box-shadow: 0 0 40px rgba(0,204,136,0.3);
+        }
+        .cta-button:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 80px rgba(0,204,136,0.5);
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px 10%; text-align: center;
+            border-top: 1px solid rgba(0,204,136,0.1);
+            position: relative; z-index: 1;
+        }
+        .footer-text { color: #555; font-size: 0.9rem; }
+
+        /* Back to top */
+        #back-to-top {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--green), var(--green-light));
+            border: none; color: #fff; font-size: 1.3rem;
+            cursor: pointer; z-index: 999;
+            opacity: 0; transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(0,204,136,0.3);
+        }
+        #back-to-top.visible { opacity: 1; }
+        #back-to-top:hover { transform: translateY(-5px); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .brand-name { font-size: 3rem; }
+            .values-grid, .products-preview { grid-template-columns: 1fr; }
+            nav { padding: 15px 20px; }
+            .section { padding: 60px 5%; }
+        }
+
+        /* Fade in */
+        .fade-in {
+            opacity: 0; transform: translateY(30px);
+            transition: all 0.6s;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <div id="loading-screen"><div class="loading-text">媄</div></div>
+    <div id="scroll-progress"></div>
+    <canvas id="particles"></canvas>
+
+    <nav>
+        <div class="logo">媄簌儿</div>
+        <a href="index.html" class="back-btn">← 返回主页</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="brand-name">媄簌儿</div>
+            <p class="hero-tagline">身体管理 · 健康生活 · 自信绽放</p>
+        </div>
+    </section>
+
+    <section class="philosophy">
+        <p class="philosophy-quote fade-in">
+            <span>媄簌儿</span>，源于对<span>身体健康</span>的极致追求。<br>
+            我们相信，真正的美由内而外。<br>
+            以科学之道，守护你的每一寸健康。
+        </p>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title fade-in">品牌理念</h2>
+        <p class="section-subtitle fade-in">三大核心价值，构建健康生活新方式</p>
+        <div class="values-grid">
+            <div class="value-card fade-in">
+                <div class="value-icon">🌿</div>
+                <h3 class="value-title">天然纯净</h3>
+                <p class="value-desc">甄选全球优质天然原料，拒绝有害添加，让身体回归纯净健康状态。</p>
+            </div>
+            <div class="value-card fade-in">
+                <div class="value-icon">🔬</div>
+                <h3 class="value-title">科技赋能</h3>
+                <p class="value-desc">融合前沿生物科技与传统养生智慧，打造高效安全的身体管理方案。</p>
+            </div>
+            <div class="value-card fade-in">
+                <div class="value-icon">💖</div>
+                <h3 class="value-title">由内而外</h3>
+                <p class="value-desc">不止于外在美丽，更关注内在健康，让每个细胞都焕发生机活力。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title fade-in">产品系列</h2>
+        <p class="section-subtitle fade-in">即将推出，敬请期待</p>
+        <div class="products-preview">
+            <div class="product-card fade-in">
+                <div class="product-tag">即将上线</div>
+                <h3 class="product-name">排寒祛湿系列</h3>
+                <p class="product-desc">科学排寒祛湿，温暖宫巢，焕发身体自愈力，告别亚健康状态。</p>
+            </div>
+            <div class="product-card fade-in">
+                <div class="product-tag">即将上线</div>
+                <h3 class="product-name">身形管理系列</h3>
+                <p class="product-desc">专业塑形方案，科学燃脂紧致，打造健康优美身体线条。</p>
+            </div>
+            <div class="product-card fade-in">
+                <div class="product-tag">即将上线</div>
+                <h3 class="product-name">内在调养系列</h3>
+                <p class="product-desc">内服养生精品，调理肠道关节，由内而外焕发健康光彩。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2 class="section-title fade-in">开启健康之旅</h2>
+        <p class="section-subtitle fade-in">媄簌儿，与你一起遇见更健康的自己</p>
+        <div class="fade-in">
+            <a href="index.html#contact" class="cta-button">联系我们</a>
+        </div>
+    </section>
+
+    <footer>
+        <p class="footer-text">© 2026 媄簌儿 | 身体健康品牌</p>
+    </footer>
+
+    <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Scroll progress
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement;
+            const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+            document.getElementById('scroll-progress').style.width = pct + '%';
+            document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
+        });
+
+        // Particles
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+        const particles = [];
+        for (let i = 0; i < 60; i++) {
+            particles.push({
+                x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                size: Math.random() * 2 + 0.5,
+                speedX: (Math.random() - 0.5) * 0.3, speedY: (Math.random() - 0.5) * 0.3,
+                opacity: Math.random() * 0.4 + 0.1
+            });
+        }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 204, 136, ${p.opacity})`;
+                ctx.fill();
+            });
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const d = Math.sqrt(dx * dx + dy * dy);
+                    if (d < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 204, 136, ${0.08 * (1 - d / 120)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Fade in
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

@@ -552,6 +552,36 @@
             color: #666;
             font-size: 0.9rem;
         }
+        .brand-button-alt {
+            margin-left: 20px;
+            background: linear-gradient(135deg, #00cc88, #00ffaa);
+            animation: pulseGlowAlt 2.5s ease-in-out infinite;
+        }
+        @keyframes pulseGlowAlt {
+            0%, 100% { box-shadow: 0 0 40px rgba(0, 204, 136, 0.35); }
+            50% { box-shadow: 0 0 80px rgba(0, 204, 136, 0.55), 0 0 120px rgba(0, 255, 170, 0.2); }
+        }
+        .brand-button-alt:hover {
+            box-shadow: 0 0 100px rgba(0, 204, 136, 0.6), 0 0 160px rgba(0, 255, 170, 0.3);
+        }
+        .service-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--cyan);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .service-link:hover {
+            color: #fff;
+            text-shadow: 0 0 10px var(--cyan);
+        }
+        .social-info {
+            font-size: 0.75rem;
+            color: #555;
+            margin-top: 5px;
+            word-break: break-all;
+        }
 
         /* AI探索区域 */
         .ai-grid {
@@ -969,11 +999,13 @@
                 <div class="service-icon">💆</div>
                 <h3 class="service-title">皮肤管理</h3>
                 <p class="service-desc">专业皮肤检测与定制化护理方案，运用先进仪器与科学配方，解决各类肌肤问题，焕发健康光彩。</p>
+                <a href="skin-cases.html" class="service-link">查看案例 →</a>
             </div>
             <div class="service-card fade-in">
                 <div class="service-icon">🏋️</div>
                 <h3 class="service-title">身材管理</h3>
                 <p class="service-desc">科学身材评估与个性化管理计划，结合运动与营养指导，帮你塑造理想体态，重获自信。</p>
+                <a href="body-cases.html" class="service-link">查看案例 →</a>
             </div>
             <div class="service-card fade-in">
                 <div class="service-icon">📹</div>
@@ -990,8 +1022,9 @@
             <p class="brand-philosophy">以科技之力，焕肌肤之美</p>
             <div class="brand-button-wrap">
                 <a href="brand.html" class="brand-button">焕彩艳谜</a>
+                <a href="meisu.html" class="brand-button brand-button-alt">媄簌儿</a>
             </div>
-            <p class="brand-desc">焕彩艳谜 — 专业皮肤管理品牌，重新定义你的美丽</p>
+            <p class="brand-desc">焕彩艳谜 — 专业皮肤管理品牌 | 媄簌儿 — 身体健康品牌</p>
         </div>
     </section>
 
@@ -1065,22 +1098,27 @@
             <div style="text-align:center">
                 <div class="social-icon">💬</div>
                 <div class="social-label">微信</div>
+                <div class="social-info">zHshu0212</div>
             </div>
             <div style="text-align:center">
                 <div class="social-icon">📕</div>
                 <div class="social-label">小红书</div>
+                <div class="social-info">356198879</div>
             </div>
             <div style="text-align:center">
                 <div class="social-icon">🎵</div>
                 <div class="social-label">抖音</div>
+                <div class="social-info">86405435474</div>
             </div>
             <div style="text-align:center">
                 <div class="social-icon">📺</div>
                 <div class="social-label">B站</div>
+                <div class="social-info">暂未开通</div>
             </div>
             <div style="text-align:center">
                 <div class="social-icon">✉️</div>
                 <div class="social-label">邮箱</div>
+                <div class="social-info">2550188050@qq.com</div>
             </div>
         </div>
         <div class="fade-in">
