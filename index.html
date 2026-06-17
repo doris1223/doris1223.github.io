@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>帅 | 数字空间</title>
+    <title>帅 | 皮肤管理·身材管理·新媒体运营 | 焕彩艳谜</title>
+    <meta name="description" content="专业皮肤管理、身材管理、新媒体运营服务。焕彩艳谜品牌，以科技之力焕肌肤之美。提供个性化护肤方案、科学塑形计划、全平台内容运营。">
+    <meta name="keywords" content="皮肤管理,身材管理,焕彩艳谜,媄簌儿,护肤,美容,新媒体运营,Codex,Claude,MiMo,AI智能体">
+    <meta name="author" content="帅">
+    <!-- Open Graph -->
+    <meta property="og:title" content="帅 | 皮肤管理·身材管理·新媒体运营">
+    <meta property="og:description" content="焕彩艳谜品牌，以科技之力焕肌肤之美。专业皮肤管理与身材管理服务。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://doris1223.github.io/wechat-qr.png">
+    <meta property="og:url" content="https://doris1223.github.io/">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2300ffff'/%3E%3Cstop offset='100%25' style='stop-color:%23ff00ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='%230a0a0f'/%3E%3Ctext x='50' y='72' font-size='65' font-weight='900' text-anchor='middle' fill='url(%23g)' font-family='serif'%3E帅%3C/text%3E%3C/svg%3E">
     <style>
         * {
             margin: 0;
@@ -957,6 +968,52 @@
             box-shadow: 0 6px 30px rgba(0, 255, 255, 0.5);
         }
 
+        /* 浮动咨询按钮 */
+        #float-consult {
+            position: fixed;
+            bottom: 90px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 22px;
+            background: linear-gradient(135deg, #07c160, #06ae56);
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(7, 193, 96, 0.4);
+            transition: all 0.3s;
+            animation: floatBounce 2s ease-in-out infinite;
+        }
+        #float-consult:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 30px rgba(7, 193, 96, 0.6);
+        }
+        .float-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50px;
+            background: rgba(7, 193, 96, 0.3);
+            animation: floatPulse 2s ease-in-out infinite;
+        }
+        @keyframes floatPulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.15); opacity: 0; }
+        }
+        .float-icon { font-size: 1.3rem; position: relative; z-index: 1; }
+        .float-text {
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+        @keyframes floatBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
         /* 滚动fade-in动画 */
         .fade-in {
             opacity: 0;
@@ -1308,6 +1365,13 @@
     <!-- 回到顶部 -->
     <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
+    <!-- 浮动咨询按钮 -->
+    <div id="float-consult" onclick="scrollToContact()">
+        <div class="float-pulse"></div>
+        <span class="float-icon">💬</span>
+        <span class="float-text">咨询</span>
+    </div>
+
     <script>
         // === Loading ===
         window.addEventListener('load', () => {
@@ -1315,6 +1379,11 @@
                 document.getElementById('loading-screen').classList.add('hidden');
             }, 1200);
         });
+
+        // === 浮动咨询按钮 ===
+        function scrollToContact() {
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
 
         // === 表单提交 → 邮箱 ===
         document.getElementById('consultForm').addEventListener('submit', function(e) {
