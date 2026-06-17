@@ -28,13 +28,84 @@
             --purple: #8b5cf6;
             --dark-bg: #0a0a0f;
             --card-bg: rgba(20, 20, 30, 0.8);
+            --text-color: #fff;
+            --text-muted: #888;
+            --border-color: rgba(0, 255, 255, 0.1);
+        }
+        body.light-mode {
+            --dark-bg: #f5f5f7;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-color: #1a1a2e;
+            --text-muted: #666;
+            --border-color: rgba(0, 0, 0, 0.08);
         }
 
         body {
             font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
             background: var(--dark-bg);
-            color: #fff;
+            color: var(--text-color);
             overflow-x: hidden;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        /* 明亮模式 */
+        body.light-mode ::-webkit-scrollbar-track { background: #f0f0f0; }
+        body.light-mode nav { background: rgba(245,245,247,0.9); border-bottom-color: rgba(0,0,0,0.06); }
+        body.light-mode .logo { filter: hue-rotate(0deg); }
+        body.light-mode .nav-links a { color: #555; }
+        body.light-mode .nav-links a:hover { color: var(--magenta); }
+        body.light-mode .section-title { -webkit-text-fill-color: var(--magenta); }
+        body.light-mode .service-card,
+        body.light-mode .why-card,
+        body.light-mode .featured-card,
+        body.light-mode .testimonial-card,
+        body.light-mode .faq-item { border-color: var(--border-color); }
+        body.light-mode .testimonial-text { color: #444; }
+        body.light-mode .faq-question { color: #333; }
+        body.light-mode .faq-answer p { color: #666; }
+        body.light-mode .stat-label,
+        body.light-mode .section-subtitle,
+        body.light-mode .service-desc,
+        body.light-mode .why-card p,
+        body.light-mode .featured-card p,
+        body.light-mode .author-tag { color: #777; }
+        body.light-mode .phone-number { -webkit-text-fill-color: var(--magenta); }
+        body.light-mode .social-info { color: #888; }
+        body.light-mode .footer-text { color: #999; }
+        body.light-mode #back-to-top { background: linear-gradient(135deg, var(--magenta), var(--cyan)); color: #fff; }
+        body.light-mode #float-consult { box-shadow: 0 4px 20px rgba(7,193,96,0.3); }
+        body.light-mode .contact-form-wrap { background: rgba(255,255,255,0.95); border-color: var(--border-color); }
+        body.light-mode .contact-form input,
+        body.light-mode .contact-form select,
+        body.light-mode .contact-form textarea { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.1); color: #333; }
+        body.light-mode .contact-form input::placeholder,
+        body.light-mode .contact-form textarea::placeholder { color: #999; }
+        body.light-mode .qr-image { border-color: rgba(0,0,0,0.1); }
+        body.light-mode .faq-item { background: rgba(255,255,255,0.8); }
+        body.light-mode .announcement-bar { opacity: 0.95; }
+
+        /* 主题切换按钮 */
+        #theme-toggle {
+            position: fixed;
+            top: 85px;
+            right: 20px;
+            z-index: 10002;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        #theme-toggle:hover {
+            transform: scale(1.1);
+            border-color: var(--cyan);
         }
 
         /* 自定义滚动条 */
@@ -1512,6 +1583,9 @@
     <!-- 粒子背景 -->
     <canvas id="particles"></canvas>
 
+    <!-- 主题切换 -->
+    <button id="theme-toggle" onclick="toggleTheme()" title="切换明暗模式">🌙</button>
+
     <!-- 顶部优惠公告 -->
     <div class="announcement-bar" id="announcement">
         <div class="announcement-content">
@@ -2111,6 +2185,20 @@
                 bar.style.transition = 'all 0.3s ease';
             });
             setTimeout(() => bar.style.display = 'none', 300);
+        }
+
+        // === 明暗模式切换 ===
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const btn = document.getElementById('theme-toggle');
+            const isLight = document.body.classList.contains('light-mode');
+            btn.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        }
+        // 记住用户选择
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            document.getElementById('theme-toggle').textContent = '☀️';
         }
 
         // === 表单提交 → 邮箱 ===
