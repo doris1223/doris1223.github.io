@@ -3,12 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>焕彩艳谜 | 产品中心</title>
+    <title>焕彩艳谜 | 高端皮肤管理品牌</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        :root {
+            --moisture: #4facfe;
+            --repair: #43e97b;
+            --whitening: #fa709a;
+            --anti-aging: #f9d423;
+            --oral: #a18cd1;
+            --body: #f6d365;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ff00ff, #ff6b9d);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #ff6b9d, #ff00ff);
         }
 
         body {
@@ -18,6 +44,39 @@
             overflow-x: hidden;
         }
 
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 0, 255, 0.1);
+            border-top: 3px solid #ff00ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         #particles {
             position: fixed;
             top: 0;
@@ -25,6 +84,16 @@
             width: 100%;
             height: 100%;
             z-index: 0;
+        }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff00ff, #ff6b9d, #ff00ff);
+            z-index: 10001;
+            transition: width 0.1s;
         }
 
         nav {
@@ -65,20 +134,39 @@
         }
 
         .hero {
-            height: 60vh;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             z-index: 1;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 0, 255, 0.15) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
         }
 
         .hero-content {
             text-align: center;
+            position: relative;
         }
 
         .brand-name {
-            font-size: 5rem;
+            font-size: 6rem;
             font-weight: 900;
             background: linear-gradient(135deg, #ff00ff 0%, #ff6b9d 50%, #ff00ff 100%);
             background-size: 200% 200%;
@@ -86,6 +174,7 @@
             -webkit-text-fill-color: transparent;
             animation: gradientShift 3s ease infinite;
             text-shadow: 0 0 100px rgba(255, 0, 255, 0.5);
+            margin-bottom: 20px;
         }
 
         @keyframes gradientShift {
@@ -94,35 +183,45 @@
         }
 
         .hero-tagline {
-            font-size: 1.3rem;
-            color: #888;
-            margin-top: 20px;
-            letter-spacing: 5px;
+            font-size: 1.5rem;
+            color: #aaa;
+            letter-spacing: 8px;
+            text-transform: uppercase;
         }
 
-        /* 系列导航 */
-        .series-nav {
+        .filter-bar {
             position: sticky;
             top: 80px;
             z-index: 100;
             background: rgba(10, 10, 15, 0.95);
-            padding: 20px 10%;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
+            padding: 20px 5%;
             border-bottom: 1px solid rgba(255, 0, 255, 0.1);
         }
 
+        .filter-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .series-nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
         .series-btn {
-            padding: 10px 25px;
+            padding: 8px 20px;
             background: transparent;
-            border: 1px solid rgba(255, 0, 255, 0.3);
-            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
             color: #aaa;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .series-btn:hover,
@@ -132,7 +231,136 @@
             color: #fff;
         }
 
-        /* 产品区域 */
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 10px 40px 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            color: #fff;
+            font-size: 0.9rem;
+            width: 200px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #ff00ff;
+            background: rgba(255, 0, 255, 0.05);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+        }
+
+        .price-filter {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .price-filter span {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .price-input {
+            width: 100px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: #fff;
+            font-size: 0.85rem;
+        }
+
+        .price-input:focus {
+            outline: none;
+            border-color: #ff00ff;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ff00ff, #ff6b9d);
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: transform 0.3s;
+        }
+
+        .filter-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            padding: 80px 10%;
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(255, 0, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 0, 255, 0.1);
+            background: rgba(10, 10, 15, 0.5);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff00ff, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #888;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        .brand-story {
+            padding: 100px 10%;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .brand-story h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #ff00ff, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-story p {
+            font-size: 1.2rem;
+            color: #aaa;
+            line-height: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
         .products-section {
             padding: 50px 5%;
             position: relative;
@@ -160,32 +388,66 @@
             background: rgba(20, 20, 30, 0.8);
             border: 1px solid rgba(255, 0, 255, 0.1);
             border-radius: 15px;
-            padding: 25px;
+            overflow: hidden;
             transition: all 0.4s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: perspective(1000px) rotateY(5deg) rotateX(5deg) translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 0, 255, 0.2);
+            border-color: rgba(255, 0, 255, 0.3);
+        }
+
+        .product-icon {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
             position: relative;
             overflow: hidden;
         }
 
-        .product-card::before {
+        .product-icon::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #ff00ff, #ff6b9d);
-            transform: scaleX(0);
-            transition: transform 0.4s;
+            height: 100%;
+            opacity: 0.3;
         }
 
-        .product-card:hover::before {
-            transform: scaleX(1);
+        .series-moisture .product-icon { background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(79, 172, 254, 0.05)); }
+        .series-moisture .product-icon::before { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .series-repair .product-icon { background: linear-gradient(135deg, rgba(67, 233, 123, 0.2), rgba(67, 233, 123, 0.05)); }
+        .series-repair .product-icon::before { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .series-whitening .product-icon { background: linear-gradient(135deg, rgba(250, 112, 154, 0.2), rgba(250, 112, 154, 0.05)); }
+        .series-whitening .product-icon::before { background: linear-gradient(135deg, #fa709a, #fee140); }
+        .series-anti-aging .product-icon { background: linear-gradient(135deg, rgba(249, 212, 35, 0.2), rgba(249, 212, 35, 0.05)); }
+        .series-anti-aging .product-icon::before { background: linear-gradient(135deg, #f9d423, #ff4e50); }
+        .series-oral .product-icon { background: linear-gradient(135deg, rgba(161, 140, 209, 0.2), rgba(161, 140, 209, 0.05)); }
+        .series-oral .product-icon::before { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+        .series-body .product-icon { background: linear-gradient(135deg, rgba(246, 211, 101, 0.2), rgba(246, 211, 101, 0.05)); }
+        .series-body .product-icon::before { background: linear-gradient(135deg, #f6d365, #fda085); }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #ff00ff, #ff6b9d);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 1;
         }
 
-        .product-card:hover {
-            border-color: rgba(255, 0, 255, 0.3);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(255, 0, 255, 0.15);
+        .product-content {
+            padding: 20px;
         }
 
         .product-header {
@@ -199,6 +461,8 @@
             font-size: 1.1rem;
             color: #fff;
             font-weight: 600;
+            flex: 1;
+            margin-right: 10px;
         }
 
         .product-price {
@@ -229,6 +493,9 @@
             line-height: 1.6;
             padding-top: 12px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
+            transition: max-height 0.3s;
+            max-height: 60px;
+            overflow: hidden;
         }
 
         .product-effect::before {
@@ -236,41 +503,162 @@
             color: #ff6b9d;
         }
 
-        /* 统计数据 */
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 80px;
-            padding: 60px 10%;
+        .product-card.expanded .product-effect {
+            max-height: 200px;
+        }
+
+        .product-detail {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s;
+            padding: 0 20px;
+            background: rgba(255, 0, 255, 0.05);
+        }
+
+        .product-card.expanded .product-detail {
+            max-height: 150px;
+            padding: 15px 20px;
+        }
+
+        .detail-content {
+            color: #888;
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        .detail-content strong {
+            color: #ff6b9d;
+        }
+
+        .testimonials {
+            padding: 100px 10%;
             position: relative;
             z-index: 1;
-            border-top: 1px solid rgba(255, 0, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 0, 255, 0.1);
+            background: rgba(10, 10, 15, 0.5);
         }
 
-        .stat-item {
+        .testimonials h2 {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
             text-align: center;
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
             background: linear-gradient(135deg, #ff00ff, #ff6b9d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .stat-label {
-            color: #888;
-            margin-top: 10px;
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: rgba(20, 20, 30, 0.8);
+            border: 1px solid rgba(255, 0, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 0, 255, 0.3);
+        }
+
+        .testimonial-stars {
+            color: #f9d423;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .testimonial-text {
+            color: #aaa;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            color: #ff6b9d;
+            font-size: 0.9rem;
+            font-weight: 600;
         }
 
         footer {
-            padding: 40px;
+            padding: 60px 40px;
             text-align: center;
             color: #555;
             position: relative;
             z-index: 1;
+            border-top: 1px solid rgba(255, 0, 255, 0.1);
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #ff00ff, #ff6b9d);
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(255, 0, 255, 0.3);
+            transition: all 0.3s;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(255, 0, 255, 0.4);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: rgba(20, 20, 30, 0.9);
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            color: #ff00ff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: #ff00ff;
+            color: #fff;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px;
+            color: #888;
+            font-size: 1.2rem;
+            display: none;
         }
 
         @media (max-width: 768px) {
@@ -278,8 +666,14 @@
                 font-size: 3rem;
             }
 
+            .hero-tagline {
+                font-size: 1rem;
+                letter-spacing: 4px;
+            }
+
             .stats {
                 gap: 30px;
+                flex-wrap: wrap;
             }
 
             .stat-number {
@@ -289,10 +683,71 @@
             .products-grid {
                 grid-template-columns: 1fr;
             }
+
+            .filter-container {
+                flex-direction: column;
+            }
+
+            .search-filter {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .price-filter {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .price-input {
+                width: 80px;
+            }
+
+            nav {
+                padding: 15px 20px;
+            }
+
+            .floating-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+
+            .back-to-top {
+                bottom: 80px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
         }
     </style>
 </head>
 <body>
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="scroll-progress" id="scrollProgress"></div>
+
     <canvas id="particles"></canvas>
 
     <nav>
@@ -303,354 +758,768 @@
     <section class="hero">
         <div class="hero-content">
             <div class="brand-name">焕彩艳谜</div>
-            <p class="hero-tagline">重新定义你的美丽</p>
+            <p class="hero-tagline">以科技之力，焕肌肤之美</p>
         </div>
     </section>
 
-    <div class="series-nav">
-        <button class="series-btn active" onclick="scrollToSeries('moisture')">补水保湿系列</button>
-        <button class="series-btn" onclick="scrollToSeries('repair')">修护舒敏系列</button>
-        <button class="series-btn" onclick="scrollToSeries('whitening')">调肤净斑控色系列</button>
-        <button class="series-btn" onclick="scrollToSeries('anti-aging')">抗衰系列</button>
-        <button class="series-btn" onclick="scrollToSeries('oral')">口服系列</button>
-        <button class="series-btn" onclick="scrollToSeries('body')">轻体系列</button>
+    <div class="filter-bar">
+        <div class="filter-container">
+            <div class="series-nav">
+                <button class="series-btn active" data-series="all">全部系列</button>
+                <button class="series-btn" data-series="moisture">补水保湿</button>
+                <button class="series-btn" data-series="repair">修护舒敏</button>
+                <button class="series-btn" data-series="whitening">调肤净斑</button>
+                <button class="series-btn" data-series="anti-aging">抗衰</button>
+                <button class="series-btn" data-series="oral">口服</button>
+                <button class="series-btn" data-series="body">轻体</button>
+            </div>
+            <div class="search-filter">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索产品名称...">
+                </div>
+                <div class="price-filter">
+                    <span>价格：</span>
+                    <input type="number" class="price-input" id="priceMin" placeholder="最低">
+                    <span>-</span>
+                    <input type="number" class="price-input" id="priceMax" placeholder="最高">
+                    <button class="filter-btn" onclick="applyFilter()">筛选</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="stats">
         <div class="stat-item">
-            <div class="stat-number">34+</div>
+            <div class="stat-number" data-target="34">0</div>
             <div class="stat-label">专业产品</div>
         </div>
         <div class="stat-item">
-            <div class="stat-number">6</div>
+            <div class="stat-number" data-target="6">0</div>
             <div class="stat-label">产品系列</div>
         </div>
         <div class="stat-item">
-            <div class="stat-number">100%</div>
-            <div class="stat-label">品质保证</div>
+            <div class="stat-number" data-target="10000">0</div>
+            <div class="stat-label">满意客户</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" data-target="98">0</div>
+            <div class="stat-label">好评率%</div>
         </div>
     </div>
 
-    <!-- 补水保湿系列 -->
-    <section class="products-section" id="moisture">
-        <h2 class="series-title">补水保湿系列</h2>
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">氨基酸洁面乳</div>
-                    <div class="product-price">¥138</div>
-                </div>
-                <div class="product-spec">100g</div>
-                <div class="product-effect">温和洁面，净泽肌肤（适合所有肤质）</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">莹润爽肤喷雾</div>
-                    <div class="product-price">¥169</div>
-                </div>
-                <div class="product-spec">100ml</div>
-                <div class="product-effect">莹润补水，保湿定妆</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">焕颜乳</div>
-                    <div class="product-price">¥199</div>
-                </div>
-                <div class="product-spec">100ml</div>
-                <div class="product-effect">保湿润泽，焕颜嫩肤提亮肤色，一抹爆水搓出小水珠</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">养肤精华水</div>
-                    <div class="product-price">¥298</div>
-                </div>
-                <div class="product-spec">100ml</div>
-                <div class="product-effect">养肤保湿，沁透润泽，舒缓镇静，强韧屏障</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">养肤精华乳</div>
-                    <div class="product-price">¥368</div>
-                </div>
-                <div class="product-spec">100ml</div>
-                <div class="product-effect">养肤保湿，令肌肤水润饱满，增强肌肤免疫力</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">新品颜隔离乳</div>
-                    <div class="product-price">¥198</div>
-                </div>
-                <div class="product-spec">40g</div>
-                <div class="product-effect">隔离粉尘，物理防晒，水润细腻，透亮肌肤</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">纤连蛋白水光美肌面膜</div>
-                    <div class="product-price">¥68</div>
-                </div>
-                <div class="product-spec">5片</div>
-                <div class="product-effect">补水保湿，美白亮肤</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">积雪草呵护面膜</div>
-                    <div class="product-price">¥128</div>
-                </div>
-                <div class="product-spec">5片</div>
-                <div class="product-effect">镇敏舒缓，促愈皮肤，晒后修复，复退红肿，抗氧化</div>
-            </div>
-        </div>
+    <section class="brand-story">
+        <h2>品牌故事</h2>
+        <p>焕彩艳谜，源于对美的极致追求。我们甄选全球优质原料，融合前沿科技，为每一位女性量身定制专属护肤方案。从实验室到您的肌肤，每一款产品都凝聚着我们对品质的执着与对美的无限热忱。我们相信，真正的美丽源自科学与自然的完美结合，源自由内而外的健康与自信。</p>
     </section>
 
-    <!-- 修护舒敏系列 -->
-    <section class="products-section" id="repair">
-        <h2 class="series-title">修护舒敏系列</h2>
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">焕彩护唇膏</div>
-                    <div class="product-price">¥398</div>
+    <div id="productsContainer">
+        <!-- 补水保湿系列 -->
+        <section class="products-section" data-series="moisture" id="moisture">
+            <h2 class="series-title">补水保湿系列</h2>
+            <div class="products-grid">
+                <div class="product-card series-moisture" data-price="138" data-name="氨基酸洁面乳">
+                    <div class="product-icon">💧</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">氨基酸洁面乳</div>
+                            <div class="product-price">¥138</div>
+                        </div>
+                        <div class="product-spec">100g</div>
+                        <div class="product-effect">温和洁面，净泽肌肤（适合所有肤质）</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心成分：</strong>氨基酸表面活性剂<br>
+                            <strong>适用肤质：</strong>所有肤质，敏感肌友好<br>
+                            <strong>使用方法：</strong>取适量加水揉搓起泡，轻柔按摩面部后冲洗
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">20ml</div>
-                <div class="product-effect">快速褪红，止痒，解决外力引起的皮肤损伤</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">多糖精华液</div>
-                    <div class="product-price">¥298</div>
+                <div class="product-card series-moisture" data-price="169" data-name="莹润爽肤喷雾">
+                    <div class="product-icon">💧</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">莹润爽肤喷雾</div>
+                            <div class="product-price">¥169</div>
+                        </div>
+                        <div class="product-spec">100ml</div>
+                        <div class="product-effect">莹润补水，保湿定妆</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>深层补水，持久保湿<br>
+                            <strong>使用场景：</strong>日常护肤、妆前打底、补妆定妆<br>
+                            <strong>使用方法：</strong>距离面部15-20cm均匀喷洒
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">30ml</div>
-                <div class="product-effect">再生重建，退红消炎，修护受损屏障</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">木糖醇呵护霜</div>
-                    <div class="product-price">¥228</div>
+                <div class="product-card series-moisture" data-price="199" data-name="焕颜乳">
+                    <div class="product-icon">💧</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">焕颜乳</div>
+                            <div class="product-price">¥199</div>
+                        </div>
+                        <div class="product-spec">100ml</div>
+                        <div class="product-effect">保湿润泽，焕颜嫩肤提亮肤色，一抹爆水搓出小水珠</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>明星成分：</strong>爆水科技配方<br>
+                            <strong>使用体验：</strong>涂抹瞬间释放水珠，深层渗透<br>
+                            <strong>功效：</strong>提亮肤色，改善暗沉
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">30g</div>
-                <div class="product-effect">舒缓退红，深层补水</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">轻奢倍护霜</div>
-                    <div class="product-price">¥498</div>
+                <div class="product-card series-moisture" data-price="298" data-name="养肤精华水">
+                    <div class="product-icon">💧</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">养肤精华水</div>
+                            <div class="product-price">¥298</div>
+                        </div>
+                        <div class="product-spec">100ml</div>
+                        <div class="product-effect">养肤保湿，沁透润泽，舒缓镇静，强韧屏障</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>修护肌肤屏障，增强免疫力<br>
+                            <strong>适合人群：</strong>屏障受损、敏感泛红肌肤<br>
+                            <strong>使用方法：</strong>洁面后取适量轻拍至吸收
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">30g</div>
-                <div class="product-effect">修护受损屏障，以油养肤，活驻颜修护受损肌肤</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">植萃颜凝胶</div>
-                    <div class="product-price">¥598</div>
+                <div class="product-card series-moisture" data-price="368" data-name="养肤精华乳">
+                    <div class="product-icon">💧</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">养肤精华乳</div>
+                            <div class="product-price">¥368</div>
+                        </div>
+                        <div class="product-spec">100ml</div>
+                        <div class="product-effect">养肤保湿，令肌肤水润饱满，增强肌肤免疫力</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心成分：</strong>多重修护精华<br>
+                            <strong>使用感受：</strong>轻盈不油腻，快速吸收<br>
+                            <strong>功效：</strong>深层滋养，提升肌肤弹性
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">20g</div>
-                <div class="product-effect">特色修护疤、痘坑、痘印及术后皮损</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">牡丹呵护凝胶套装</div>
-                    <div class="product-price">¥498</div>
+                <div class="product-card series-moisture" data-price="198" data-name="新品颜隔离乳">
+                    <div class="product-icon">💧</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">新品颜隔离乳</div>
+                            <div class="product-price">¥198</div>
+                        </div>
+                        <div class="product-spec">40g</div>
+                        <div class="product-effect">隔离粉尘，物理防晒，水润细腻，透亮肌肤</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>防护功效：</strong>物理防晒，隔离污染<br>
+                            <strong>质地特点：</strong>轻薄透气，不假白<br>
+                            <strong>使用场景：</strong>日常通勤，户外活动
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">5g*10支</div>
-                <div class="product-effect">快速褪红消肿，增厚角质层，重塑完美肌肤</div>
+                <div class="product-card series-moisture" data-price="68" data-name="纤连蛋白水光美肌面膜">
+                    <div class="product-icon">💧</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">纤连蛋白水光美肌面膜</div>
+                            <div class="product-price">¥68</div>
+                        </div>
+                        <div class="product-spec">5片</div>
+                        <div class="product-effect">补水保湿，美白亮肤</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心成分：</strong>纤连蛋白，透明质酸<br>
+                            <strong>使用频率：</strong>每周2-3次<br>
+                            <strong>功效：</strong>密集补水，提亮肤色
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card series-moisture" data-price="128" data-name="积雪草呵护面膜">
+                    <div class="product-icon">💧</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">积雪草呵护面膜</div>
+                            <div class="product-price">¥128</div>
+                        </div>
+                        <div class="product-spec">5片</div>
+                        <div class="product-effect">镇敏舒缓，促愈皮肤，晒后修复，复退红肿，抗氧化</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心成分：</strong>积雪草提取物<br>
+                            <strong>适用场景：</strong>晒后修复、医美术后护理<br>
+                            <strong>功效：</strong>舒缓镇静，促进愈合
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 调肤净斑控色系列 -->
-    <section class="products-section" id="whitening">
-        <h2 class="series-title">调肤净斑控色系列</h2>
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">美肤霜</div>
-                    <div class="product-price">¥398</div>
+        <!-- 修护舒敏系列 -->
+        <section class="products-section" data-series="repair" id="repair">
+            <h2 class="series-title">修护舒敏系列</h2>
+            <div class="products-grid">
+                <div class="product-card series-repair" data-price="398" data-name="焕彩护唇膏">
+                    <div class="product-icon">🛡️</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">焕彩护唇膏</div>
+                            <div class="product-price">¥398</div>
+                        </div>
+                        <div class="product-spec">20ml</div>
+                        <div class="product-effect">快速褪红，止痒，解决外力引起的皮肤损伤</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>快速修复，止痒褪红<br>
+                            <strong>适用症状：</strong>唇部干裂、外力损伤<br>
+                            <strong>使用方法：</strong>每日多次涂抹
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">30g</div>
-                <div class="product-effect">击退暗沉，瓦解黑色素，美白嫩肤</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">美肌时光（小套）</div>
-                    <div class="product-price">¥499</div>
+                <div class="product-card series-repair" data-price="298" data-name="多糖精华液">
+                    <div class="product-icon">🛡️</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">多糖精华液</div>
+                            <div class="product-price">¥298</div>
+                        </div>
+                        <div class="product-spec">30ml</div>
+                        <div class="product-effect">再生重建，退红消炎，修护受损屏障</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心成分：</strong>多糖修护因子<br>
+                            <strong>核心功效：</strong>再生重建，消炎退红<br>
+                            <strong>适用人群：</strong>屏障受损、炎症肌肤
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">10ml*2+10g*2</div>
-                <div class="product-effect">洁白透亮，多维度提升紧致，淡化黑色素，细致毛孔</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">美肌时光（大套）</div>
-                    <div class="product-price">¥2980</div>
+                <div class="product-card series-repair" data-price="228" data-name="木糖醇呵护霜">
+                    <div class="product-icon">🛡️</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">木糖醇呵护霜</div>
+                            <div class="product-price">¥228</div>
+                        </div>
+                        <div class="product-spec">30g</div>
+                        <div class="product-effect">舒缓退红，深层补水</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心成分：</strong>木糖醇保湿因子<br>
+                            <strong>使用感受：</strong>温和不刺激，深层滋润<br>
+                            <strong>功效：</strong>舒缓敏感，持久保湿
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">30ml*3+30g*2</div>
-                <div class="product-effect">洁白透亮，多维度提升紧致，淡化黑色素，细致毛孔</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">植萃焕颜凝胶套装</div>
-                    <div class="product-price">¥3980</div>
+                <div class="product-card series-repair" data-price="498" data-name="轻奢倍护霜">
+                    <div class="product-icon">🛡️</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">轻奢倍护霜</div>
+                            <div class="product-price">¥498</div>
+                        </div>
+                        <div class="product-spec">30g</div>
+                        <div class="product-effect">修护受损屏障，以油养肤，活驻颜修护受损肌肤</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心科技：</strong>以油养肤配方<br>
+                            <strong>核心功效：</strong>深层修护，驻颜抗老<br>
+                            <strong>适合人群：</strong>屏障严重受损、熟龄肌肤
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">3g*5支</div>
-                <div class="product-effect">自然美肤疗法，直击素源淡化色斑，细致毛孔，提升面部改善黑眼圈</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">双美水光套组</div>
-                    <div class="product-price">¥1280</div>
+                <div class="product-card series-repair" data-price="598" data-name="植萃颜凝胶">
+                    <div class="product-icon">🛡️</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">植萃颜凝胶</div>
+                            <div class="product-price">¥598</div>
+                        </div>
+                        <div class="product-spec">20g</div>
+                        <div class="product-effect">特色修护疤、痘坑、痘印及术后皮损</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>淡化疤痕痘印<br>
+                            <strong>适用场景：</strong>痘坑修复、术后护理<br>
+                            <strong>使用方法：</strong>局部涂抹，轻柔按摩
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">6组</div>
-                <div class="product-effect">美白淡斑，提亮肤色，细腻肌肤，滋养修护</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">植萃焕颜液</div>
-                    <div class="product-price">¥398</div>
+                <div class="product-card series-repair" data-price="498" data-name="牡丹呵护凝胶套装">
+                    <div class="product-icon">🛡️</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">牡丹呵护凝胶套装</div>
+                            <div class="product-price">¥498</div>
+                        </div>
+                        <div class="product-spec">5g*10支</div>
+                        <div class="product-effect">快速褪红消肿，增厚角质层，重塑完美肌肤</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心成分：</strong>牡丹提取物<br>
+                            <strong>核心功效：</strong>褪红消肿，增厚角质<br>
+                            <strong>使用场景：</strong>医美术后、敏感急救
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">20ml</div>
-                <div class="product-effect">层层瓦解黑色素及代谢老废角质，光感臻白</div>
             </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">植萃美颜液</div>
-                    <div class="product-price">¥398</div>
-                </div>
-                <div class="product-spec">20ml</div>
-                <div class="product-effect">去黄亮颜，莹润嫩肤，黄褐斑的长期保养液</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">净颜液</div>
-                    <div class="product-price">¥499</div>
-                </div>
-                <div class="product-spec">20ml</div>
-                <div class="product-effect">直击色素源，快速瓦解黑色素，解决色沉铅汞，黄褐斑等色素问题</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">净透精华液</div>
-                    <div class="product-price">¥398</div>
-                </div>
-                <div class="product-spec">20ml</div>
-                <div class="product-effect">美白淡斑，淡化深层色素色沉</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">焕彩霜</div>
-                    <div class="product-price">¥498</div>
-                </div>
-                <div class="product-spec">30g</div>
-                <div class="product-effect">深层焕发肌润透亮泽，抑制淡化黑色素，重塑健康美肌</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">净颜尊享套组</div>
-                    <div class="product-price">¥1280</div>
-                </div>
-                <div class="product-spec">20ml+30g*2</div>
-                <div class="product-effect">直击色素源，快速瓦解黑色素，解决色沉铅汞，黄褐斑等色素问题</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">清颜平衡臻萃套组</div>
-                    <div class="product-price">¥598</div>
-                </div>
-                <div class="product-spec">30g</div>
-                <div class="product-effect">调节水油平衡，有效缓解、粉刺闭口、痘疮、修复激素脸</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">焕亮抗皱精华眼霜</div>
-                    <div class="product-price">¥399</div>
-                </div>
-                <div class="product-spec">20g</div>
-                <div class="product-effect">淡化黑眼圈眼袋，提亮眼周，改善脂肪粒可当全脸抗皱精华霜用</div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 抗衰系列 -->
-    <section class="products-section" id="anti-aging">
-        <h2 class="series-title">抗衰系列</h2>
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">胶原水光净肤抗皱套</div>
-                    <div class="product-price">¥1980</div>
+        <!-- 调肤净斑控色系列 -->
+        <section class="products-section" data-series="whitening" id="whitening">
+            <h2 class="series-title">调肤净斑控色系列</h2>
+            <div class="products-grid">
+                <div class="product-card series-whitening" data-price="398" data-name="美肤霜">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">美肤霜</div>
+                            <div class="product-price">¥398</div>
+                        </div>
+                        <div class="product-spec">30g</div>
+                        <div class="product-effect">击退暗沉，瓦解黑色素，美白嫩肤</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>美白淡斑，提亮肤色<br>
+                            <strong>核心成分：</strong>多维度美白因子<br>
+                            <strong>使用方法：</strong>每日早晚使用
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">3MC*10+7g*10</div>
-                <div class="product-effect">净肤肌肤，排毒养颜，淡化细纹，紧致抗衰</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">幼态焕肤套餐</div>
-                    <div class="product-price">¥1280</div>
+                <div class="product-card series-whitening" data-price="499" data-name="美肌时光（小套）">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">美肌时光（小套）</div>
+                            <div class="product-price">¥499</div>
+                        </div>
+                        <div class="product-spec">10ml*2+10g*2</div>
+                        <div class="product-effect">洁白透亮，多维度提升紧致，淡化黑色素，细致毛孔</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>套装内容：</strong>精华水+精华乳+面霜+眼霜<br>
+                            <strong>核心功效：</strong>全套美白淡斑方案<br>
+                            <strong>适合人群：</strong>初次尝试美白套装
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">50ml*1+30g*1+30cm*1</div>
-                <div class="product-effect">激活细胞，紧致抗衰，提亮肤色，提升轮廓</div>
+                <div class="product-card series-whitening" data-price="2980" data-name="美肌时光（大套）">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-badge">热销</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">美肌时光（大套）</div>
+                            <div class="product-price">¥2980</div>
+                        </div>
+                        <div class="product-spec">30ml*3+30g*2</div>
+                        <div class="product-effect">洁白透亮，多维度提升紧致，淡化黑色素，细致毛孔</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>套装内容：</strong>全套美白修护产品<br>
+                            <strong>核心功效：</strong>深度美白，持久淡斑<br>
+                            <strong>适合人群：</strong>追求极致美白效果
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card series-whitening" data-price="3980" data-name="植萃焕颜凝胶套装">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-badge">热销</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">植萃焕颜凝胶套装</div>
+                            <div class="product-price">¥3980</div>
+                        </div>
+                        <div class="product-spec">3g*5支</div>
+                        <div class="product-effect">自然美肤疗法，直击素源淡化色斑，细致毛孔，提升面部改善黑眼圈</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心科技：</strong>植萃焕颜配方<br>
+                            <strong>核心功效：</strong>淡化色斑，改善黑眼圈<br>
+                            <strong>使用周期：</strong>28天焕肤周期
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card series-whitening" data-price="1280" data-name="双美水光套组">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">双美水光套组</div>
+                            <div class="product-price">¥1280</div>
+                        </div>
+                        <div class="product-spec">6组</div>
+                        <div class="product-effect">美白淡斑，提亮肤色，细腻肌肤，滋养修护</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>套装内容：</strong>6组水光精华<br>
+                            <strong>核心功效：</strong>水光焕肤，深层滋养<br>
+                            <strong>使用频率：</strong>每周1-2次
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card series-whitening" data-price="398" data-name="植萃焕颜液">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">植萃焕颜液</div>
+                            <div class="product-price">¥398</div>
+                        </div>
+                        <div class="product-spec">20ml</div>
+                        <div class="product-effect">层层瓦解黑色素及代谢老废角质，光感臻白</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心成分：</strong>植萃美白精华<br>
+                            <strong>核心功效：</strong>瓦解黑色素，代谢角质<br>
+                            <strong>使用方法：</strong>洁面后取适量涂抹
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card series-whitening" data-price="398" data-name="植萃美颜液">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">植萃美颜液</div>
+                            <div class="product-price">¥398</div>
+                        </div>
+                        <div class="product-spec">20ml</div>
+                        <div class="product-effect">去黄亮颜，莹润嫩肤，黄褐斑的长期保养液</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>去黄提亮，淡化黄褐斑<br>
+                            <strong>适合人群：</strong>肤色暗沉、黄褐斑肌肤<br>
+                            <strong>使用建议：</strong>长期坚持使用效果更佳
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card series-whitening" data-price="499" data-name="净颜液">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">净颜液</div>
+                            <div class="product-price">¥499</div>
+                        </div>
+                        <div class="product-spec">20ml</div>
+                        <div class="product-effect">直击色素源，快速瓦解黑色素，解决色沉铅汞，黄褐斑等色素问题</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>深层净颜，瓦解色素<br>
+                            <strong>适用症状：</strong>色沉、铅汞斑、黄褐斑<br>
+                            <strong>使用方法：</strong>局部重点涂抹
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card series-whitening" data-price="398" data-name="净透精华液">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">净透精华液</div>
+                            <div class="product-price">¥398</div>
+                        </div>
+                        <div class="product-spec">20ml</div>
+                        <div class="product-effect">美白淡斑，淡化深层色素色沉</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>淡化深层色素<br>
+                            <strong>核心成分：</strong>多维度净透精华<br>
+                            <strong>使用建议：</strong>配合按摩促进吸收
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card series-whitening" data-price="498" data-name="焕彩霜">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">焕彩霜</div>
+                            <div class="product-price">¥498</div>
+                        </div>
+                        <div class="product-spec">30g</div>
+                        <div class="product-effect">深层焕发肌润透亮泽，抑制淡化黑色素，重塑健康美肌</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>焕彩亮肤，抑制黑色素<br>
+                            <strong>使用感受：</strong>质地滋润不油腻<br>
+                            <strong>适合人群：</strong>追求健康光泽肌肤
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card series-whitening" data-price="1280" data-name="净颜尊享套组">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">净颜尊享套组</div>
+                            <div class="product-price">¥1280</div>
+                        </div>
+                        <div class="product-spec">20ml+30g*2</div>
+                        <div class="product-effect">直击色素源，快速瓦解黑色素，解决色沉铅汞，黄褐斑等色素问题</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>套装内容：</strong>净颜精华+焕彩面霜*2<br>
+                            <strong>核心功效：</strong>深度净颜，全面淡斑<br>
+                            <strong>使用周期：</strong>建议连续使用3个月
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card series-whitening" data-price="598" data-name="清颜平衡臻萃套组">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">清颜平衡臻萃套组</div>
+                            <div class="product-price">¥598</div>
+                        </div>
+                        <div class="product-spec">30g</div>
+                        <div class="product-effect">调节水油平衡，有效缓解、粉刺闭口、痘疮、修复激素脸</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>控油平衡，修复痘肌<br>
+                            <strong>适用症状：</strong>粉刺、闭口、激素脸<br>
+                            <strong>使用建议：</strong>配合清颜系列使用
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card series-whitening" data-price="399" data-name="焕亮抗皱精华眼霜">
+                    <div class="product-icon">🌸</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">焕亮抗皱精华眼霜</div>
+                            <div class="product-price">¥399</div>
+                        </div>
+                        <div class="product-spec">20g</div>
+                        <div class="product-effect">淡化黑眼圈眼袋，提亮眼周，改善脂肪粒可当全脸抗皱精华霜用</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>淡化眼周问题，全脸可用<br>
+                            <strong>适用症状：</strong>黑眼圈、眼袋、脂肪粒<br>
+                            <strong>使用方法：</strong>取适量轻点眼周按摩
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 口服系列 -->
-    <section class="products-section" id="oral">
-        <h2 class="series-title">口服系列</h2>
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">胶原蛋白少女饮</div>
-                    <div class="product-price">¥399</div>
+        <!-- 抗衰系列 -->
+        <section class="products-section" data-series="anti-aging" id="anti-aging">
+            <h2 class="series-title">抗衰系列</h2>
+            <div class="products-grid">
+                <div class="product-card series-anti-aging" data-price="1980" data-name="胶原水光净肤抗皱套">
+                    <div class="product-icon">✨</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">胶原水光净肤抗皱套</div>
+                            <div class="product-price">¥1980</div>
+                        </div>
+                        <div class="product-spec">3MC*10+7g*10</div>
+                        <div class="product-effect">净肤肌肤，排毒养颜，淡化细纹，紧致抗衰</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>套装内容：</strong>胶原精华+抗皱面霜<br>
+                            <strong>核心功效：</strong>抗皱紧致，排毒养颜<br>
+                            <strong>使用周期：</strong>28天焕肤疗程
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">30ml*10瓶</div>
-                <div class="product-effect">7大养护功效=40次普通面膜+淡斑+助眠+紧致+美白+排毒+补水+抗衰</div>
-            </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">益生元果蔬植物肽嗨吃饮</div>
-                    <div class="product-price">¥399</div>
+                <div class="product-card series-anti-aging" data-price="1280" data-name="幼态焕肤套餐">
+                    <div class="product-icon">✨</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">幼态焕肤套餐</div>
+                            <div class="product-price">¥1280</div>
+                        </div>
+                        <div class="product-spec">50ml*1+30g*1+30cm*1</div>
+                        <div class="product-effect">激活细胞，紧致抗衰，提亮肤色，提升轮廓</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>套装内容：</strong>焕肤精华+紧致面霜+提拉面膜<br>
+                            <strong>核心功效：</strong>激活细胞，提升轮廓<br>
+                            <strong>适合人群：</strong>追求年轻紧致肌肤
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">50ml*10支</div>
-                <div class="product-effect">控糖、阻挡糖对油份的吸收，护肠道，护关节，调理肠道健康</div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 轻体系列 -->
-    <section class="products-section" id="body">
-        <h2 class="series-title">轻体系列</h2>
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">美肌调膜粉</div>
-                    <div class="product-price">¥468</div>
+        <!-- 口服系列 -->
+        <section class="products-section" data-series="oral" id="oral">
+            <h2 class="series-title">口服系列</h2>
+            <div class="products-grid">
+                <div class="product-card series-oral" data-price="399" data-name="胶原蛋白少女饮">
+                    <div class="product-icon">🥤</div>
+                    <div class="product-badge">热销</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">胶原蛋白少女饮</div>
+                            <div class="product-price">¥399</div>
+                        </div>
+                        <div class="product-spec">30ml*10瓶</div>
+                        <div class="product-effect">7大养护功效=40次普通面膜+淡斑+助眠+紧致+美白+排毒+补水+抗衰</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心成分：</strong>小分子胶原蛋白肽<br>
+                            <strong>核心功效：</strong>内服美容，全面养护<br>
+                            <strong>使用方法：</strong>每日1瓶，睡前饮用更佳
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">100g</div>
-                <div class="product-effect">美白淡斑，淡化细纹，清透毛孔，紧致抗衰</div>
+                <div class="product-card series-oral" data-price="399" data-name="益生元果蔬植物肽嗨吃饮">
+                    <div class="product-icon">🥤</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">益生元果蔬植物肽嗨吃饮</div>
+                            <div class="product-price">¥399</div>
+                        </div>
+                        <div class="product-spec">50ml*10支</div>
+                        <div class="product-effect">控糖、阻挡糖对油份的吸收，护肠道，护关节，调理肠道健康</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心成分：</strong>益生元+植物肽<br>
+                            <strong>核心功效：</strong>控糖护肠，健康养护<br>
+                            <strong>使用方法：</strong>餐前饮用，辅助控糖
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">嫒嫒童寒湿排重套</div>
-                    <div class="product-price">¥599</div>
+        </section>
+
+        <!-- 轻体系列 -->
+        <section class="products-section" data-series="body" id="body">
+            <h2 class="series-title">轻体系列</h2>
+            <div class="products-grid">
+                <div class="product-card series-body" data-price="468" data-name="美肌调膜粉">
+                    <div class="product-icon">💪</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">美肌调膜粉</div>
+                            <div class="product-price">¥468</div>
+                        </div>
+                        <div class="product-spec">100g</div>
+                        <div class="product-effect">美白淡斑，淡化细纹，清透毛孔，紧致抗衰</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>多效合一，焕肤美肌<br>
+                            <strong>使用方法：</strong>调和后敷面15-20分钟<br>
+                            <strong>使用频率：</strong>每周2-3次
+                        </div>
+                    </div>
                 </div>
-                <div class="product-spec">50CM*2瓶</div>
-                <div class="product-effect">排寒，排湿，暖宫，暖胃，掉重</div>
+                <div class="product-card series-body" data-price="599" data-name="嫒嫒童寒湿排重套">
+                    <div class="product-icon">💪</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">嫒嫒童寒湿排重套</div>
+                            <div class="product-price">¥599</div>
+                        </div>
+                        <div class="product-spec">50CM*2瓶</div>
+                        <div class="product-effect">排寒，排湿，暖宫，暖胃，掉重</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>核心功效：</strong>排寒祛湿，暖身养生<br>
+                            <strong>适用人群：</strong>体寒湿重、宫寒胃寒<br>
+                            <strong>使用方法：</strong>配合按摩使用
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card series-body" data-price="1980" data-name="嫒嫒美人塑形套">
+                    <div class="product-icon">💪</div>
+                    <div class="product-badge">热销</div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">嫒嫒美人塑形套</div>
+                            <div class="product-price">¥1980</div>
+                        </div>
+                        <div class="product-spec">10ml*10支+10ml*10支</div>
+                        <div class="product-effect">爆脂，燃脂，收紧肌肤</div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="detail-content">
+                            <strong>套装内容：</strong>爆脂精华+紧致精华<br>
+                            <strong>核心功效：</strong>爆脂燃脂，紧致塑形<br>
+                            <strong>使用建议：</strong>配合运动效果更佳
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="product-card">
-                <div class="product-header">
-                    <div class="product-name">嫒嫒美人塑形套</div>
-                    <div class="product-price">¥1980</div>
-                </div>
-                <div class="product-spec">10ml*10支+10ml*10支</div>
-                <div class="product-effect">爆脂，燃脂，收紧肌肤</div>
+        </section>
+    </div>
+
+    <div class="no-results" id="noResults">
+        没有找到匹配的产品，请调整搜索条件
+    </div>
+
+    <section class="testimonials">
+        <h2>客户好评</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <div class="testimonial-text">"用了美肌时光大套一个月，肤色明显提亮了，斑点也淡了很多！客服很专业，会根据肤质推荐产品。"</div>
+                <div class="testimonial-author">—— 王女士，35岁</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <div class="testimonial-text">"胶原蛋白少女饮真的有用！喝了两周皮肤变得水润有光泽，睡眠质量也改善了。会继续回购！"</div>
+                <div class="testimonial-author">—— 李女士，28岁</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <div class="testimonial-text">"敏感肌终于找到救星了！多糖精华液用了一周，红血丝明显改善，皮肤不再动不动就过敏。"</div>
+                <div class="testimonial-author">—— 张女士，32岁</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★☆</div>
+                <div class="testimonial-text">"嫒嫒美人塑形套配合运动，一个月腰围小了3cm！效果比预期的还要好，非常满意！"</div>
+                <div class="testimonial-author">—— 陈女士，38岁</div>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>© 2026 焕彩艳谜 | 重新定义你的美丽</p>
+        <p>© 2026 焕彩艳谜 | 以科技之力，焕肌肤之美</p>
+        <p>高端皮肤管理品牌 · 专研东方肌肤美学</p>
     </footer>
 
+    <button class="floating-btn" onclick="alert('咨询热线：400-888-8888')">
+        💬 咨询购买
+    </button>
+
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>
+
     <script>
-        // 粒子背景
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loading').classList.add('hidden');
+            }, 800);
+        });
+
         const canvas = document.getElementById('particles');
         const ctx = canvas.getContext('2d');
 
@@ -662,7 +1531,7 @@
         window.addEventListener('resize', resizeCanvas);
 
         const particles = [];
-        const particleCount = 60;
+        const particleCount = 80;
 
         class Particle {
             constructor() {
@@ -675,6 +1544,7 @@
                 this.speedX = (Math.random() - 0.5) * 0.3;
                 this.speedY = (Math.random() - 0.5) * 0.3;
                 this.opacity = Math.random() * 0.4 + 0.1;
+                this.hue = Math.random() * 60 + 300;
             }
             update() {
                 this.x += this.speedX;
@@ -685,7 +1555,7 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 0, 255, ${this.opacity})`;
+                ctx.fillStyle = `hsla(${this.hue}, 100%, 50%, ${this.opacity})`;
                 ctx.fill();
             }
         }
@@ -702,7 +1572,7 @@
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance < 120) {
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(255, 0, 255, ${0.08 * (1 - distance / 120)})`;
+                        ctx.strokeStyle = `rgba(255, 107, 157, ${0.08 * (1 - distance / 120)})`;
                         ctx.lineWidth = 0.5;
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
@@ -720,25 +1590,128 @@
         }
         animate();
 
-        // 滚动到指定系列
-        function scrollToSeries(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
-            document.querySelectorAll('.series-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        document.querySelectorAll('.series-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const series = this.dataset.series;
+                document.querySelectorAll('.series-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                if (series === 'all') {
+                    document.querySelectorAll('.products-section').forEach(s => s.style.display = 'block');
+                } else {
+                    document.querySelectorAll('.products-section').forEach(s => {
+                        if (s.dataset.series === series) {
+                            s.style.display = 'block';
+                        } else {
+                            s.style.display = 'none';
+                        }
+                    });
+                }
+                document.getElementById('noResults').style.display = 'none';
+            });
+        });
+
+        function applyFilter() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const minPrice = parseInt(document.getElementById('priceMin').value) || 0;
+            const maxPrice = parseInt(document.getElementById('priceMax').value) || Infinity;
+            
+            let hasResults = false;
+            document.querySelectorAll('.product-card').forEach(card => {
+                const name = card.dataset.name.toLowerCase();
+                const price = parseInt(card.dataset.price);
+                
+                const matchSearch = name.includes(searchTerm);
+                const matchPrice = price >= minPrice && price <= maxPrice;
+                
+                if (matchSearch && matchPrice) {
+                    card.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.querySelectorAll('.products-section').forEach(section => {
+                const visibleCards = section.querySelectorAll('.product-card[style="display: block;"], .product-card:not([style*="display: none"])');
+                const hasVisible = Array.from(section.querySelectorAll('.product-card')).some(c => c.style.display !== 'none');
+                section.style.display = hasVisible ? 'block' : 'none';
+            });
+
+            document.getElementById('noResults').style.display = hasResults ? 'none' : 'block';
         }
 
-        // 滚动时高亮对应按钮
-        window.addEventListener('scroll', () => {
-            const sections = ['moisture', 'repair', 'whitening', 'anti-aging', 'oral', 'body'];
-            const buttons = document.querySelectorAll('.series-btn');
-            
-            for (let i = sections.length - 1; i >= 0; i--) {
-                const section = document.getElementById(sections[i]);
-                if (section && section.getBoundingClientRect().top <= 200) {
-                    buttons.forEach(b => b.classList.remove('active'));
-                    buttons[i].classList.add('active');
-                    break;
+        document.getElementById('searchInput').addEventListener('input', applyFilter);
+
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.toggle('expanded');
+            });
+        });
+
+        const statNumbers = document.querySelectorAll('.stat-number');
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = parseInt(entry.target.dataset.target);
+                    animateNumber(entry.target, target);
+                    statsObserver.unobserve(entry.target);
                 }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(num => statsObserver.observe(num));
+
+        function animateNumber(element, target) {
+            let current = 0;
+            const increment = target / 60;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current).toLocaleString() + (target === 98 ? '%' : '+');
+            }, 30);
+        }
+
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercent = (scrollTop / scrollHeight) * 100;
+            document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+            
+            const backToTop = document.getElementById('backToTop');
+            if (scrollTop > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        const sections = document.querySelectorAll('.products-section');
+        const seriesBtns = document.querySelectorAll('.series-btn[data-series]:not([data-series="all"])');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 200) {
+                    current = section.dataset.series;
+                }
+            });
+            
+            if (current) {
+                seriesBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.series === current) {
+                        btn.classList.add('active');
+                    }
+                });
             }
         });
     </script>
