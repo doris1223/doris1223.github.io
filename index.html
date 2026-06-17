@@ -583,6 +583,91 @@
             word-break: break-all;
         }
 
+        /* 联系表单 */
+        .contact-form-wrap {
+            max-width: 500px;
+            margin: 50px auto 0;
+            background: rgba(20,20,30,0.8);
+            border: 1px solid rgba(0,255,255,0.15);
+            border-radius: 20px;
+            padding: 40px 30px;
+        }
+        .form-title {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .contact-form input,
+        .contact-form select,
+        .contact-form textarea {
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+        .contact-form input:focus,
+        .contact-form select:focus,
+        .contact-form textarea:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 15px rgba(0,255,255,0.1);
+        }
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: #666;
+        }
+        .contact-form select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+        .contact-form select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .form-row input {
+            margin-bottom: 15px;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 5px;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,255,255,0.3);
+        }
+        .form-note {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
         /* AI探索区域 */
         .ai-grid {
             display: grid;
@@ -1121,8 +1206,26 @@
                 <div class="social-info">2550188050@qq.com</div>
             </div>
         </div>
-        <div class="fade-in">
-            <a href="#" class="cta-button">立即咨询</a>
+        <div class="contact-form-wrap fade-in">
+            <h3 class="form-title">在线预约咨询</h3>
+            <form class="contact-form" action="https://formspree.io/f/你的表单ID" method="POST">
+                <div class="form-row">
+                    <input type="text" name="name" placeholder="您的姓名" required>
+                    <input type="tel" name="phone" placeholder="联系电话" required>
+                </div>
+                <select name="service" required>
+                    <option value="" disabled selected>选择咨询项目</option>
+                    <option value="皮肤管理">皮肤管理</option>
+                    <option value="身材管理">身材管理</option>
+                    <option value="焕彩艳谜产品">焕彩艳谜产品</option>
+                    <option value="媄簌儿产品">媄簌儿产品</option>
+                    <option value="新媒体合作">新媒体合作</option>
+                    <option value="其他">其他</option>
+                </select>
+                <textarea name="message" placeholder="请描述您的需求..." rows="4"></textarea>
+                <button type="submit" class="submit-btn">提交预约</button>
+            </form>
+            <p class="form-note">提交后我们将在24小时内联系您</p>
         </div>
     </section>
 
