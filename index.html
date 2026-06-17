@@ -1094,6 +1094,26 @@
         .contact-section {
             text-align: center;
         }
+        .phone-display {
+            margin-bottom: 30px;
+        }
+        .phone-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+        .phone-number:hover {
+            filter: brightness(1.2);
+        }
+        .phone-tip {
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
         .social-icons {
             display: flex;
             justify-content: center;
@@ -1713,6 +1733,10 @@
     <section class="contact-section" id="contact">
         <h2 class="section-title fade-in">联系我</h2>
         <p class="section-subtitle fade-in">期待与你的每一次连接</p>
+        <div class="phone-display fade-in">
+            <a href="tel:173712716181" class="phone-number">📞 173-7127-16181</a>
+            <p class="phone-tip">点击号码直接拨打</p>
+        </div>
         <div class="social-icons fade-in">
             <div style="text-align:center">
                 <div class="social-icon">💬</div>
@@ -1798,11 +1822,11 @@
     <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
     <!-- 浮动咨询按钮 -->
-    <div id="float-consult" onclick="scrollToContact()">
+    <a href="tel:173712716181" id="float-consult">
         <div class="float-pulse"></div>
-        <span class="float-icon">💬</span>
-        <span class="float-text">咨询</span>
-    </div>
+        <span class="float-icon">📞</span>
+        <span class="float-text">咨询购买</span>
+    </a>
 
     <script>
         // === Loading ===
@@ -1812,10 +1836,7 @@
             }, 1200);
         });
 
-        // === 浮动咨询按钮 ===
-        function scrollToContact() {
-            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-        }
+        // === 浮动咨询按钮（电话链接） ===
 
         // === 数字计数动画 ===
         const counterObserver = new IntersectionObserver((entries) => {
