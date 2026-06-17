@@ -581,6 +581,108 @@
             margin-top: 2px;
         }
 
+        /* 为什么选择我们 */
+        .why-us-section {
+            background: linear-gradient(180deg, transparent, rgba(0,255,255,0.015), transparent);
+        }
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        .why-card {
+            text-align: center;
+            padding: 35px 20px;
+            background: var(--card-bg);
+            border: 1px solid rgba(0,255,255,0.08);
+            border-radius: 16px;
+            transition: all 0.4s;
+        }
+        .why-card:hover {
+            border-color: rgba(0,255,255,0.25);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,255,255,0.08);
+        }
+        .why-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        .why-card h3 {
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        .why-card p {
+            color: #888;
+            font-size: 0.85rem;
+            line-height: 1.7;
+        }
+
+        /* 服务流程 */
+        .process-section {
+            background: linear-gradient(180deg, transparent, rgba(255,0,255,0.015), transparent);
+        }
+        .process-timeline {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 0;
+            max-width: 900px;
+            margin: 0 auto 40px;
+            flex-wrap: wrap;
+        }
+        .process-step {
+            text-align: center;
+            flex: 0 0 140px;
+        }
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 auto 12px;
+            box-shadow: 0 0 20px rgba(0,255,255,0.2);
+        }
+        .step-content h3 {
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+        .step-content p {
+            color: #888;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+        .process-connector {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            margin-top: 25px;
+            flex-shrink: 0;
+        }
+        .process-cta {
+            text-align: center;
+        }
+        .start-btn {
+            display: inline-block;
+            padding: 14px 50px;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            border-radius: 30px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(0,255,255,0.2);
+        }
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(0,255,255,0.4);
+        }
+
         /* 数据看板 */
         .stats-section {
             padding: 60px 10%;
@@ -1533,6 +1635,84 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- 为什么选择我们 -->
+    <section class="why-us-section" id="whyus">
+        <h2 class="section-title fade-in">为什么选择我们</h2>
+        <p class="section-subtitle fade-in">专业·用心·值得信赖</p>
+        <div class="why-grid fade-in">
+            <div class="why-card">
+                <div class="why-icon">🔬</div>
+                <h3>科学检测</h3>
+                <p>引进专业皮肤检测仪器，精准分析肤质问题，定制专属方案，拒绝盲目护肤。</p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">👩‍⚕️</div>
+                <h3>专业团队</h3>
+                <p>持证美容师全程服务，定期培训进修，紧跟行业前沿技术，确保服务品质。</p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">🌿</div>
+                <h3>安全产品</h3>
+                <p>焕彩艳谜自有品牌，甄选优质原料，温和安全，敏感肌也可放心使用。</p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">📊</div>
+                <h3>效果保障</h3>
+                <p>建立客户档案，定期回访跟踪，效果不佳免费调整方案，直到满意为止。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服务流程 -->
+    <section class="process-section" id="process">
+        <h2 class="section-title fade-in">服务流程</h2>
+        <p class="section-subtitle fade-in">从咨询到见效，每一步都用心</p>
+        <div class="process-timeline fade-in">
+            <div class="process-step">
+                <div class="step-number">01</div>
+                <div class="step-content">
+                    <h3>在线咨询</h3>
+                    <p>添加微信或拨打电话，描述您的需求和困扰</p>
+                </div>
+            </div>
+            <div class="process-connector"></div>
+            <div class="process-step">
+                <div class="step-number">02</div>
+                <div class="step-content">
+                    <h3>到店检测</h3>
+                    <p>专业仪器检测皮肤/体脂状况，生成详细报告</p>
+                </div>
+            </div>
+            <div class="process-connector"></div>
+            <div class="process-step">
+                <div class="step-number">03</div>
+                <div class="step-content">
+                    <h3>方案定制</h3>
+                    <p>根据检测结果，一对一制定个性化管理方案</p>
+                </div>
+            </div>
+            <div class="process-connector"></div>
+            <div class="process-step">
+                <div class="step-number">04</div>
+                <div class="step-content">
+                    <h3>专业护理</h3>
+                    <p>持证美容师操作，使用焕彩艳谜产品进行护理</p>
+                </div>
+            </div>
+            <div class="process-connector"></div>
+            <div class="process-step">
+                <div class="step-number">05</div>
+                <div class="step-content">
+                    <h3>效果跟踪</h3>
+                    <p>建立专属档案，定期回访，持续优化方案</p>
+                </div>
+            </div>
+        </div>
+        <div class="process-cta fade-in">
+            <a href="#contact" class="start-btn">立即预约体验 →</a>
         </div>
     </section>
 
