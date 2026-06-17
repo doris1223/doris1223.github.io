@@ -667,6 +667,59 @@
             font-size: 0.8rem;
             color: #555;
         }
+        .wechat-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .wechat-divider {
+            position: relative;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .wechat-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+        }
+        .wechat-divider span {
+            background: rgba(20,20,30,0.8);
+            padding: 0 15px;
+            color: #666;
+            font-size: 0.85rem;
+            position: relative;
+        }
+        .wechat-tip {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        .wechat-qr {
+            display: inline-block;
+        }
+        .qr-placeholder {
+            width: 160px;
+            height: 160px;
+            background: linear-gradient(135deg, rgba(7,193,96,0.15), rgba(7,193,96,0.05));
+            border: 2px dashed rgba(7,193,96,0.4);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .qr-icon { font-size: 2.5rem; }
+        .qr-text { color: #07c160; font-size: 0.85rem; font-weight: 600; }
+        .qr-id { color: #888; font-size: 0.8rem; }
+        .wechat-note {
+            margin-top: 12px;
+            font-size: 0.75rem;
+            color: #555;
+        }
 
         /* AI探索区域 */
         .ai-grid {
@@ -1208,12 +1261,12 @@
         </div>
         <div class="contact-form-wrap fade-in">
             <h3 class="form-title">在线预约咨询</h3>
-            <form class="contact-form" action="https://formspree.io/f/你的表单ID" method="POST">
+            <form class="contact-form" id="consultForm">
                 <div class="form-row">
-                    <input type="text" name="name" placeholder="您的姓名" required>
-                    <input type="tel" name="phone" placeholder="联系电话" required>
+                    <input type="text" id="formName" placeholder="您的姓名" required>
+                    <input type="tel" id="formPhone" placeholder="联系电话" required>
                 </div>
-                <select name="service" required>
+                <select id="formService" required>
                     <option value="" disabled selected>选择咨询项目</option>
                     <option value="皮肤管理">皮肤管理</option>
                     <option value="身材管理">身材管理</option>
@@ -1222,10 +1275,23 @@
                     <option value="新媒体合作">新媒体合作</option>
                     <option value="其他">其他</option>
                 </select>
-                <textarea name="message" placeholder="请描述您的需求..." rows="4"></textarea>
+                <textarea id="formMessage" placeholder="请描述您的需求..." rows="4"></textarea>
                 <button type="submit" class="submit-btn">提交预约</button>
             </form>
-            <p class="form-note">提交后我们将在24小时内联系您</p>
+            <p class="form-note">提交后直接发送至邮箱，我们将尽快联系您</p>
+
+            <div class="wechat-section">
+                <div class="wechat-divider"><span>或</span></div>
+                <p class="wechat-tip">扫码添加微信，直接沟通</p>
+                <div class="wechat-qr">
+                    <div class="qr-placeholder">
+                        <span class="qr-icon">💬</span>
+                        <span class="qr-text">微信扫码</span>
+                        <span class="qr-id">zHshu0212</span>
+                    </div>
+                </div>
+                <p class="wechat-note">截图保存二维码 → 微信扫一扫添加</p>
+            </div>
         </div>
     </section>
 
@@ -1260,6 +1326,24 @@
             setTimeout(() => {
                 document.getElementById('loading-screen').classList.add('hidden');
             }, 1200);
+        });
+
+        // === 表单提交 → 邮箱 ===
+        document.getElementById('consultForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('formName').value;
+            const phone = document.getElementById('formPhone').value;
+            const service = document.getElementById('formService').value;
+            const message = document.getElementById('formMessage').value;
+            const subject = encodeURIComponent('【网站咨询】' + name + ' - ' + service);
+            const body = encodeURIComponent(
+                '姓名：' + name + '\n' +
+                '电话：' + phone + '\n' +
+                '咨询项目：' + service + '\n' +
+                '需求描述：' + message
+            );
+            window.location.href = 'mailto:2550188050@qq.com?subject=' + subject + '&body=' + body;
+            alert('已打开邮箱，请发送邮件完成预约！');
         });
 
         // === 粒子背景 ===
